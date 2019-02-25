@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'globals.dart' as globals;
 
 class LoginPage extends StatefulWidget {
 
@@ -35,14 +36,31 @@ class _LoginPageState extends State<LoginPage> {
           FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
           print('Signed in: ${user.uid}');
         } else if (_formType == FormType.register) {
-          FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
-          print('Registered user: ${user.uid}');
+            print(_email.substring(_email.length - 4, _email.length));
+            //The following code will be used when we want to validate only users that have .edu on their email
+            /*
+            if(_email.substring(_email.length - 4, _email.length) != '.edu'){
+              _showDialogAlertGivenMessage('The email needs to end with ".edu"');
+            } else {
+              FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+              globals.registeredSuccessfully = true;
+              user.sendEmailVerification();
+              print('Registered user: ${user.uid}');
+            }
+            */
+            //Take this out when uncommenting
+            FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+            globals.registeredSuccessfully = true;
+            user.sendEmailVerification();
+            print('Registered user: ${user.uid}');
         } else if(_formType == FormType.forget){
-          return FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
+          FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
         }
       }
       catch(e){
         print('Error $e');
+        globals.registeredSuccessfully = false;
+        _showDialogAlertGivenCode(e.code);
       }
     }
   }
@@ -159,7 +177,9 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: () {
             if(validateAndSave()){
               validateAndSubmit();
-              moveToLogin();
+              if(globals.registeredSuccessfully) {
+                moveToLogin();
+              }
             }
           },
         ),
@@ -175,15 +195,7 @@ class _LoginPageState extends State<LoginPage> {
         child: new Text('Send Email', style: new TextStyle(fontSize: 20.0)),
         onPressed: () {
           validateAndSubmit();
-          return showDialog (
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Text(
-                    'If email exists, we will send an email with a link to reset your password'),
-              );
-            },
-          );
+          _showDialogAlertGivenMessage('If email exists, we will send an email with a link to reset your password');
         }
 
        ),
@@ -192,6 +204,33 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: moveToLogin,
         ),
       ];
+    }
+  }
+
+  void _showDialogAlertGivenMessage(String message){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: new Text(message),
+          );
+        }
+    );
+  }
+
+  void _showDialogAlertGivenCode(String code) {
+    if(_formType == FormType.login){
+      for(int i = 0; i < globals.Login_Errors.length; i++){
+        if(code == globals.Login_Errors[i]){
+          _showDialogAlertGivenMessage(globals.Login_Messages[i]);
+        }
+      }
+    } else if (_formType == FormType.register){
+      for(int i = 0; i < globals.Register_Errors.length; i++){
+        if(code == globals.Register_Errors[i]){
+          _showDialogAlertGivenMessage(globals.Register_Messages[i]);
+        }
+      }
     }
   }
 }
