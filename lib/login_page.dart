@@ -38,7 +38,6 @@ class _LoginPageState extends State<LoginPage> {
         } else if (_formType == FormType.register) {
           FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
           print('Registered user: ${user.uid}');
-          moveToLogin;
         } else if(_formType == FormType.forget){
           return FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
         }
@@ -182,10 +181,15 @@ class _LoginPageState extends State<LoginPage> {
       return [
         new RaisedButton(
           child: new Text('Create an Account', style: new TextStyle(fontSize: 20.0)),
-          onPressed: validateAndSubmit,
+          onPressed: () {
+            if(validateAndSave()){
+              validateAndSubmit();
+              moveToLogin();
+            }
+          },
         ),
         new FlatButton (
-          child: new Text('Have an account? Login', style: new TextStyle(fontSize: 20.0)),
+        child: new Text('Have an account? Login', style: new TextStyle(fontSize: 20.0)),
           onPressed: moveToLogin,
         ),
 
@@ -194,7 +198,19 @@ class _LoginPageState extends State<LoginPage> {
       return [
         new RaisedButton(
         child: new Text('Send Email', style: new TextStyle(fontSize: 20.0)),
-        onPressed: moveToLogin,
+        onPressed: () {
+          validateAndSubmit();
+          return showDialog (
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(
+                    'If email exists, we will send an email with a link to reset your password'),
+              );
+            },
+          );
+        }
+
        ),
         new FlatButton (
           child: new Text('Go Back to Login', style: new TextStyle(fontSize: 20.0)),
@@ -205,6 +221,10 @@ class _LoginPageState extends State<LoginPage> {
       return [
         new RaisedButton(
           child: new Text('Reset Password', style: new TextStyle(fontSize: 20.0)),
+          onPressed: moveToLogin,
+        ),
+        new FlatButton(
+          child: new Text('Go Back to Login', style: new TextStyle(fontSize: 20.0)),
           onPressed: moveToLogin,
         ),
       ];
