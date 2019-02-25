@@ -33,12 +33,18 @@ class _LoginPageState extends State<LoginPage> {
     if(validateAndSave()){
       try {
         if(_formType == FormType.login) {
-          FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
-          print('Signed in: ${user.uid}');
+          //FirebaseUser user = FirebaseAuth.instance.currentUser();
+          FirebaseUser user;
+          //if(user.isEmailVerified) {
+            user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+            print('Signed in: ${user.uid}');
+          //} else {
+            //_showDialogAlertGivenMessage('Please verify your email address');
+          //}
         } else if (_formType == FormType.register) {
             print(_email.substring(_email.length - 4, _email.length));
             //The following code will be used when we want to validate only users that have .edu on their email
-            /*
+
             if(_email.substring(_email.length - 4, _email.length) != '.edu'){
               _showDialogAlertGivenMessage('The email needs to end with ".edu"');
             } else {
@@ -47,12 +53,13 @@ class _LoginPageState extends State<LoginPage> {
               user.sendEmailVerification();
               print('Registered user: ${user.uid}');
             }
-            */
+            /*
             //Take this out when uncommenting
             FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
             globals.registeredSuccessfully = true;
             user.sendEmailVerification();
             print('Registered user: ${user.uid}');
+            */
         } else if(_formType == FormType.forget){
           FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
         }
