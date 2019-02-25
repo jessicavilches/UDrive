@@ -10,8 +10,7 @@ class LoginPage extends StatefulWidget {
 enum FormType {
   login,
   register,
-  forget,
-  reset
+  forget
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -66,13 +65,6 @@ class _LoginPageState extends State<LoginPage> {
     formKey.currentState.reset();
     setState((){
       _formType = FormType.forget;
-    });
-  }
-
-  void moveToReset(){
-    formKey.currentState.reset();
-    setState((){
-      _formType = FormType.reset;
     });
   }
 
@@ -140,23 +132,6 @@ class _LoginPageState extends State<LoginPage> {
           onSaved: (value) => _email = value,
         ),
       ];
-    } else if (_formType == FormType.reset) {
-      final _myPassController = TextEditingController();
-      return [
-        new TextFormField(
-          controller: _myPassController,
-          decoration: new InputDecoration(labelText: 'Password'),
-          obscureText: true,
-          validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-          onSaved: (value) => _password = value,
-        ),
-        new TextFormField(
-          decoration: new InputDecoration(labelText: 'Retype Password'),
-          obscureText: true,
-          validator: (value) => value != _myPassController.text ? 'Retype password' : null,
-          onSaved: (value) => _password = value,
-        ),
-      ];
     }
   }
 
@@ -213,17 +188,6 @@ class _LoginPageState extends State<LoginPage> {
 
        ),
         new FlatButton (
-          child: new Text('Go Back to Login', style: new TextStyle(fontSize: 20.0)),
-          onPressed: moveToLogin,
-        ),
-      ];
-    } else if (_formType == FormType.reset){
-      return [
-        new RaisedButton(
-          child: new Text('Reset Password', style: new TextStyle(fontSize: 20.0)),
-          onPressed: moveToLogin,
-        ),
-        new FlatButton(
           child: new Text('Go Back to Login', style: new TextStyle(fontSize: 20.0)),
           onPressed: moveToLogin,
         ),
