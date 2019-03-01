@@ -2,6 +2,10 @@ library UDriveTest.globals;
 
 bool registeredSuccessfully;
 bool loggedSuccessfully;
+
+var UserModes = ['Rider', 'Driver', 'Driver/Rider'];
+var currentItemSelected = UserModes[0];
+
 var Login_Errors = ['ERROR_INVALID_EMAIL', 'ERROR_WRONG_PASSWORD', 'ERROR_USER_NOT_FOUND', 'ERROR_USER_DISABLED','ERROR_OPERATION_NOT_ALLOWED'];
 var Login_Messages = [
   'The email address is malformed',

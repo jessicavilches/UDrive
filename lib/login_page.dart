@@ -16,6 +16,8 @@ enum FormType {
 
 class _LoginPageState extends State<LoginPage> {
   final formKey = new GlobalKey<FormState>();
+  String _fname;
+  String _lname;
   String _email;
   String _password;
   FormType _formType = FormType.login;
@@ -39,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
           }
           else if (!user.isEmailVerified) {
             FirebaseAuth.instance.signOut();
-            globals.loggedSuccessfully = true;
             _showDialogAlertGivenMessage('Please verify your email');
           }
         } else if (_formType == FormType.register) {
@@ -58,8 +59,7 @@ class _LoginPageState extends State<LoginPage> {
       }
       catch(e){
         print('Error $e');
-        if (_formType == FormType.register) globals.registeredSuccessfully = false;
-        if (_formType == FormType.login) globals.loggedSuccessfully = false;
+        globals.registeredSuccessfully = false;
         _showDialogAlertGivenCode(e.code);
       }
     }
@@ -96,8 +96,8 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(16.0),
         child: new Form(
           key: formKey,
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: new ListView(
+            //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: buildInputs() + buildSubmitButtons(),
           ),
         ),
@@ -124,6 +124,16 @@ class _LoginPageState extends State<LoginPage> {
       final _myPassController = TextEditingController();
       return [
         new TextFormField(
+          decoration: new InputDecoration(labelText: 'First Name'),
+          validator: (value) => value.isEmpty ? 'First name can\'t be empty' : null,
+          onSaved: (value) => _fname = value,
+        ),
+        new TextFormField(
+          decoration: new InputDecoration(labelText: 'Last Name'),
+          validator: (value) => value.isEmpty ? 'Last name can\'t be empty' : null,
+          onSaved: (value) => _lname = value,
+        ),
+        new TextFormField(
           decoration: new InputDecoration(labelText: 'Email'),
           validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
           onSaved: (value) => _email = value,
@@ -140,6 +150,20 @@ class _LoginPageState extends State<LoginPage> {
           obscureText: true,
           validator: (value) => value != _myPassController.text ? 'Retype password' : null,
           onSaved: (value) => _password = value,
+        ),
+        new DropdownButton<String>(
+          value: globals.currentItemSelected,
+          items: globals.UserModes.map((String dropDownStringItem) {
+            return new DropdownMenuItem<String>(
+              value: dropDownStringItem,
+              child: new Text(dropDownStringItem),
+            );
+          }).toList(),
+          onChanged: (String newValueSelected) {
+            _onDropDownItemSelected(newValueSelected);
+          },
+          //hint: new Text("Select mode"),
+
         ),
       ];
     } else if (_formType == FormType.forget){
@@ -232,5 +256,11 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     }
+  }
+
+  void _onDropDownItemSelected(String newValueSelected){
+    setState(() {
+      globals.currentItemSelected = newValueSelected;
+    });
   }
 }
