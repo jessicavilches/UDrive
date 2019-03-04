@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'globals.dart' as globals;
 import 'services/crud.dart';
+import 'auth.dart';
 
 
 class LoginPage extends StatefulWidget {
+  LoginPage({this.auth, this.onSignedIn});
+  final BaseAuth auth;
+  final VoidCallback onSignedIn;
 
   @override
   State<StatefulWidget> createState() => new _LoginPageState();
@@ -37,10 +41,18 @@ class _LoginPageState extends State<LoginPage> {
     return false;
   }
 
-  void validateAndSubmit() async{
+  Future<void> validateAndSubmit() async{
     if(validateAndSave()){
       try {
         if(_formType == FormType.login) {
+          String userId = await widget.auth.signInWithEmailAndPassword(_email, _password);
+          if(userId == null){
+            _showDialogAlertGivenMessage('Please verify your email');
+          } else {
+            print('Signed in: $userId');
+            widget.onSignedIn();
+          }
+          /*
           FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
           if(user.isEmailVerified || user == null){
             print('Signed in: ${user.uid}');
@@ -49,24 +61,36 @@ class _LoginPageState extends State<LoginPage> {
             FirebaseAuth.instance.signOut();
             _showDialogAlertGivenMessage('Please verify your email');
           }
+          */
         } else if (_formType == FormType.register) {
             //The following code will be used when we want to validate only users that have .edu on their email
             if(_email.substring(_email.length - 4, _email.length) != '.edu'){
+              globals.registeredSuccessfully = false;
               _showDialogAlertGivenMessage('The email needs to end with ".edu"');
             } else {
+              /*
               FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
               globals.registeredSuccessfully = true;
               user.sendEmailVerification();
               print('Registered user: ${user.uid}');
               _userID = '${user.uid}';
+              */
+              String userId = await widget.auth.createUserWithEmailAndPassword(_email, _password);
+              //_onRegistration(true);
+              globals.registeredSuccessfully = true;
+              this._userID = userId;
+              print('Registered user: $userId');
+              widget.onSignedIn();
             }
         } else if(_formType == FormType.forget){
-          FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
+          //FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
+          String result = await widget.auth.sendPasswordResetEmail(this._email);
+          _showDialogAlertGivenMessage("If email exists, we will send an email with a link to reset your password.");
         }
       }
       catch(e){
         print('Error $e');
-        globals.registeredSuccessfully = false;
+        if (_formType == FormType.register) globals.registeredSuccessfully = false;
         _showDialogAlertGivenCode(e.code);
       }
     }
@@ -185,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  List <Widget> buildSubmitButtons(){
+  List <Widget> buildSubmitButtons() {
     if(_formType == FormType.login) {
       return [
         new RaisedButton(
@@ -207,21 +231,9 @@ class _LoginPageState extends State<LoginPage> {
         new RaisedButton(
           child: new Text('Create an Account', style: new TextStyle(fontSize: 20.0)),
           onPressed: () {
-              validateAndSubmit();
-             // Navigator.of(context).pop();
-              if(globals.registeredSuccessfully) {
-                Map <String, dynamic> userData = {
-                  'email': this._email,
-                  'fname': this._fname,
-                  'lname': this._lname,
-                  'mode': this._mode,
-                  'uid' : this._userID
-                };
-                crudObj.addData(userData).catchError((e) {
-                  print(e);
-                });
-                moveToLogin();
-              }
+            validateAndSubmit().then((_){
+              addToDatabase();
+            });
           },
         ),
         new FlatButton (
@@ -234,11 +246,7 @@ class _LoginPageState extends State<LoginPage> {
       return [
         new RaisedButton(
         child: new Text('Send Email', style: new TextStyle(fontSize: 20.0)),
-        onPressed: () {
-          validateAndSubmit();
-          _showDialogAlertGivenMessage('If email exists, we will send an email with a link to reset your password');
-        }
-
+        onPressed: validateAndSubmit,
        ),
         new FlatButton (
           child: new Text('Go Back to Login', style: new TextStyle(fontSize: 20.0)),
@@ -272,6 +280,13 @@ class _LoginPageState extends State<LoginPage> {
           _showDialogAlertGivenMessage(globals.Register_Messages[i]);
         }
       }
+    } else if (_formType == FormType.forget){
+      for(int i = 0; i < globals.Forget_Errors.length; i++){
+        if(code == globals.Forget_Errors[i]){
+          print(globals.Forget_Errors[i] + '\n');
+          _showDialogAlertGivenMessage(globals.Forget_Messages[i]);
+        }
+      }
     }
   }
 
@@ -280,5 +295,27 @@ class _LoginPageState extends State<LoginPage> {
       globals.currentItemSelected = newValueSelected;
       this._mode = newValueSelected;
     });
+  }
+
+  void _onRegistration(bool registration){
+    setState(() {
+      globals.registeredSuccessfully = registration;
+    });
+  }
+
+  void addToDatabase() async {
+    if(globals.registeredSuccessfully == true) {
+      Map <String, dynamic> userData = {
+        'email': this._email,
+        'fname': this._fname,
+        'lname': this._lname,
+        'mode': this._mode,
+        'uid' : this._userID
+      };
+      crudObj.addData(userData).catchError((e) {
+        print(e);
+      });
+      moveToLogin();
+    }
   }
 }

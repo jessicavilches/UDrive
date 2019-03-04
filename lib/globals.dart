@@ -14,9 +14,14 @@ var Login_Messages = [
   'The user has been disabled',
   'Too many attempts to sign in as this user, please try later'
 ];
-var Register_Errors = ['ERROR_WEAK_PASSWORD', 'ERROR_INVALID_CREDENTIAL', 'ERROR_EMAIL_ALREADY_IN_USE'];
+var Register_Errors = ['ERROR_WEAK_PASSWORD', 'ERROR_INVALID_EMAIL', 'ERROR_EMAIL_ALREADY_IN_USE'];
 var Register_Messages = [
   'Please try a stronger password',
   'The email address is malformed',
   'This email address is already in use'
+];
+var Forget_Errors = ['ERROR_INVALID_EMAIL', 'ERROR_USER_NOT_FOUND'];
+var Forget_Messages = [
+  'The email address is malformed',
+  'No user corresponds to that email address'
 ];
