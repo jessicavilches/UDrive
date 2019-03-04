@@ -63,34 +63,39 @@ class _Calendar extends State<Calendar>{
       return new Scaffold(
         body: new Container(
           padding: EdgeInsets.all(32.0),
-            child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            child: new ListView(
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
             SizedBox(height: 100),
               new RaisedButton(
-                child: new Text('Select Date'),
+                child: new Text('Select Date: '  + this._date.month.toString()
+                    + '/' + this._date.day.toString() + '/' + this._date.year.toString(), style: new TextStyle(fontSize: 20.0)),
                 onPressed: (){
                   _selectDate(context);
                   },
               ),
               SizedBox(height: 20),
               new RaisedButton(
-                child: new Text('Select Start Time'),
-                onPressed: (){_selectStartInterval(context);},
+                child: new Text('Select Start Time: ' + this._startTime.format(context), style: new TextStyle(fontSize: 20.0)),
+                onPressed: (){
+                  _selectStartInterval(context);
+                  },
               ),
               SizedBox(height: 20),
               new RaisedButton(
-                child: new Text('Select End Time'),
+                child: new Text(
+                  'Select End Time: ' + this._endTime.format(context), style: new TextStyle(fontSize: 20.0)),
                 onPressed: (){_selectEndInterval(context);},
               ),
               SizedBox(height: 20),
               new TextFormField(
                 decoration: new InputDecoration(labelText: 'Address'),
                 validator: (value) => value.isEmpty ? 'Address can\'t be empty' : null,
+                onSaved: (value) => _address = value,
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 40),
               new RaisedButton(
-                child: new Text('Submit Ride'),
+                child: new Text('Submit Ride', style: new TextStyle(fontSize: 20.0)),
                 onPressed: (){//_selectDate(context);
                 addToDatabase();},
               ),

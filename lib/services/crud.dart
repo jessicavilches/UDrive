@@ -19,7 +19,7 @@ class crudMethods {
       });
     }
     else {
-      print("user not logged in\n");
+      print("User not logged in\n");
     }
   }
 
