@@ -59,6 +59,7 @@ class _Calendar extends State<Calendar>{
           padding: new EdgeInsets.all(32.0),
           child: new Column(
             children: <Widget>[
+              SizedBox(height: 100),
               Align(
                 alignment: Alignment.centerLeft,
               ),
@@ -68,18 +69,22 @@ class _Calendar extends State<Calendar>{
                   _selectDate(context);
                   },
               ),
+              SizedBox(height: 20),
               new RaisedButton(
                 child: new Text('Select Start Time'),
                 onPressed: (){_selectStartInterval(context);},
               ),
+              SizedBox(height: 20),
               new RaisedButton(
                 child: new Text('Select End Time'),
                 onPressed: (){_selectEndInterval(context);},
               ),
+              SizedBox(height: 20),
               new TextFormField(
                 decoration: new InputDecoration(labelText: 'Address'),
                 validator: (value) => value.isEmpty ? 'Address can\'t be empty' : null,
               ),
+              SizedBox(height: 10),
               new RaisedButton(
                 child: new Text('Submit Ride'),
                 onPressed: (){_selectDate(context);},
