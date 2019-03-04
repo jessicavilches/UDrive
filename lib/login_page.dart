@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'globals.dart' as globals;
+import 'services/crud.dart';
+
 
 class LoginPage extends StatefulWidget {
 
@@ -20,7 +22,11 @@ class _LoginPageState extends State<LoginPage> {
   String _lname;
   String _email;
   String _password;
+  String _mode;
+  String _uid;
   FormType _formType = FormType.login;
+
+  crudMethods crudObj = new crudMethods();
 
   bool validateAndSave() {
     final form = formKey.currentState;
@@ -53,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
               globals.registeredSuccessfully = true;
               user.sendEmailVerification();
               print('Registered user: ${user.uid}');
+              _uid = '${user.uid}';
             }
         } else if(_formType == FormType.forget){
           FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
@@ -162,6 +169,7 @@ class _LoginPageState extends State<LoginPage> {
           }).toList(),
           onChanged: (String newValueSelected) {
             _onDropDownItemSelected(newValueSelected);
+            _mode = newValueSelected;
           },
           //hint: new Text("Select mode"),
 
@@ -202,7 +210,20 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: () {
             if(validateAndSave()){
               validateAndSubmit();
+             // Navigator.of(context).pop();
+              String value1 = (dart.core::String)globals.registeredSuccessfully;
+              print('This is the value: '+ (+'\n');
               if(globals.registeredSuccessfully) {
+                Map userData = {
+                  'email': this._email,
+                  'fname': this._fname,
+                  'lname': this._lname,
+                  'mode': _mode,
+                  'uid' : _uid
+                };
+                crudObj.addData(userData).catchError((e) {
+                  print(e);
+                });
                 moveToLogin();
               }
             }
