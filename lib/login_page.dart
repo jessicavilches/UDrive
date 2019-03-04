@@ -210,7 +210,6 @@ class _LoginPageState extends State<LoginPage> {
               validateAndSubmit();
              // Navigator.of(context).pop();
               if(globals.registeredSuccessfully) {
-                print('Gets here1');
                 Map <String, dynamic> userData = {
                   'email': this._email,
                   'fname': this._fname,
@@ -218,11 +217,9 @@ class _LoginPageState extends State<LoginPage> {
                   'mode': this._mode,
                   'uid' : this._userID
                 };
-                print('Gets here2');
                 crudObj.addData(userData).catchError((e) {
                   print(e);
                 });
-                print('Gets here3');
                 moveToLogin();
               }
           },
