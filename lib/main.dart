@@ -15,9 +15,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      //home: HomePage(),
+      home: HomePage(),
       //home: new LoginPage(auth: new Auth()),
-      home: new RootPage(auth: new Auth()),
+      //home: new HomePage(auth: new Auth()),
     );
   }
 }

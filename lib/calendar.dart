@@ -56,13 +56,11 @@ class _Calendar extends State<Calendar>{
     Widget build(BuildContext context){
       return new Scaffold(
         body: new Container(
-          padding: new EdgeInsets.all(32.0),
-          child: new Column(
+          padding: EdgeInsets.all(32.0),
+            child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 100),
-              Align(
-                alignment: Alignment.centerLeft,
-              ),
+            SizedBox(height: 100),
               new RaisedButton(
                 child: new Text('Select Date'),
                 onPressed: (){
@@ -91,7 +89,7 @@ class _Calendar extends State<Calendar>{
               ),
             ],
           ),
-        ),
+          ),
       );
     }
 }
