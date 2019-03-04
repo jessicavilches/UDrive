@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   String _mode;
-  String _uid;
+  String _userID;
   FormType _formType = FormType.login;
 
   crudMethods crudObj = new crudMethods();
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
               globals.registeredSuccessfully = true;
               user.sendEmailVerification();
               print('Registered user: ${user.uid}');
-              _uid = '${user.uid}';
+              _userID = '${user.uid}';
             }
         } else if(_formType == FormType.forget){
           FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
@@ -210,16 +210,19 @@ class _LoginPageState extends State<LoginPage> {
               validateAndSubmit();
              // Navigator.of(context).pop();
               if(globals.registeredSuccessfully) {
-                Map<String,dynamic> userData = {
+                print('Gets here1');
+                Map <String, dynamic> userData = {
                   'email': this._email,
                   'fname': this._fname,
                   'lname': this._lname,
-                  'mode': _mode,
-                  'uid' : _uid
+                  'mode': this._mode,
+                  'uid' : this._userID
                 };
+                print('Gets here2');
                 crudObj.addData(userData).catchError((e) {
                   print(e);
                 });
+                print('Gets here3');
                 moveToLogin();
               }
           },
