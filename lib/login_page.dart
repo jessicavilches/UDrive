@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
           if(user.isEmailVerified || user == null){
             print('Signed in: ${user.uid}');
+            print('sup ');
           }
           else if (!user.isEmailVerified) {
             FirebaseAuth.instance.signOut();
