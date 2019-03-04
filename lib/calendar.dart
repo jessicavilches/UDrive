@@ -14,7 +14,7 @@ class _Calendar extends State<Calendar>{
           context: context,
           initialDate: _date,
           firstDate: new DateTime(DateTime.now().year),
-          lastDate: new DateTime(2019)
+          lastDate: new DateTime(2020)
       );
       if(picked != null && picked != _date){
         print('Date selected:  ${_date.toString()}');

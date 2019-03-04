@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage>{
 
   @override
   Widget build(BuildContext context){
-    return new Scaffold(
+    return Scaffold(
       appBar: new AppBar(
         title: new Text('Welcome', style: new TextStyle(fontSize: 20.0)),
         actions: <Widget>[

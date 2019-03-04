@@ -80,7 +80,8 @@ class _LoginPageState extends State<LoginPage> {
               globals.registeredSuccessfully = true;
               this._userID = userId;
               print('Registered user: $userId');
-              widget.onSignedIn();
+              _showDialogAlertGivenMessage('Registration completed. Please verify your email address');
+              //widget.onSignedIn();
             }
         } else if(_formType == FormType.forget){
           //FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
