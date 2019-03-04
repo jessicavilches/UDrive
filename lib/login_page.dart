@@ -44,7 +44,6 @@ class _LoginPageState extends State<LoginPage> {
           FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
           if(user.isEmailVerified || user == null){
             print('Signed in: ${user.uid}');
-            print('sup ');
           }
           else if (!user.isEmailVerified) {
             FirebaseAuth.instance.signOut();
@@ -208,11 +207,8 @@ class _LoginPageState extends State<LoginPage> {
         new RaisedButton(
           child: new Text('Create an Account', style: new TextStyle(fontSize: 20.0)),
           onPressed: () {
-            if(validateAndSave()){
               validateAndSubmit();
              // Navigator.of(context).pop();
-              String value1 = (dart.core::String)globals.registeredSuccessfully;
-              print('This is the value: '+ (+'\n');
               if(globals.registeredSuccessfully) {
                 Map userData = {
                   'email': this._email,
@@ -226,7 +222,6 @@ class _LoginPageState extends State<LoginPage> {
                 });
                 moveToLogin();
               }
-            }
           },
         ),
         new FlatButton (
