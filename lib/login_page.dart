@@ -129,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
       ];
     } else if (_formType == FormType.register){
       final _myPassController = TextEditingController();
+      this._mode = globals.currentItemSelected;
       return [
         new TextFormField(
           decoration: new InputDecoration(labelText: 'First Name'),
@@ -168,7 +169,6 @@ class _LoginPageState extends State<LoginPage> {
           }).toList(),
           onChanged: (String newValueSelected) {
             _onDropDownItemSelected(newValueSelected);
-            _mode = newValueSelected;
           },
           //hint: new Text("Select mode"),
 
@@ -278,6 +278,7 @@ class _LoginPageState extends State<LoginPage> {
   void _onDropDownItemSelected(String newValueSelected){
     setState(() {
       globals.currentItemSelected = newValueSelected;
+      this._mode = newValueSelected;
     });
   }
 }
