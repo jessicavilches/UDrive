@@ -22,4 +22,12 @@ class crudMethods {
       print("user not logged in\n");
     }
   }
+
+  Future<void> addRide(rideData) async {
+    //if (isLoggedIn()) {
+      Firestore.instance.collection("Rides").add(rideData).catchError((e) {
+        print(e);
+      });
+    //}
+  }
 }

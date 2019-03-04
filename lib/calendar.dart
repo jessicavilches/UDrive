@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'globals.dart' as globals;
+import 'services/crud.dart';
+
 
 class Calendar extends StatefulWidget{
   @override
@@ -10,6 +13,7 @@ class _Calendar extends State<Calendar>{
     TimeOfDay _startTime = new TimeOfDay.now();
     TimeOfDay _endTime = new TimeOfDay.now();
     String _address;
+    crudMethods crudObj = new crudMethods();
 
     void _selectDate(BuildContext context) async{
       final DateTime picked = await showDatePicker(
@@ -19,36 +23,38 @@ class _Calendar extends State<Calendar>{
           lastDate: new DateTime(2020)
       );
       if(picked != null){
-        print('Date selected:  ${_date.toString()}');
         setState(() {
           _date = picked;
         });
+        print('Date selected:  ${_date.toString()}');
       }
     }
 
     Future<Null> _selectStartInterval(BuildContext context) async{
-      final DateTime picked = (await showTimePicker(
+      final TimeOfDay picked = (await showTimePicker(
           context: context,
           initialTime: _startTime
-      )) as DateTime;
-      if(picked != null && picked != _date){
-        print('Time selected:  ${_startTime.toString()}');
+      )); //as DateTime;
+      if(picked != null){
         setState(() {
-          _startTime = picked as TimeOfDay;
+          _startTime = picked;
         });
+        print('Time selected:  ${_startTime.toString()}');
+
       }
     }
 
     Future<Null> _selectEndInterval(BuildContext context) async{
-      final DateTime picked = (await showTimePicker(
+      final TimeOfDay picked = (await showTimePicker(
           context: context,
           initialTime: _endTime
-      )) as DateTime;
-      if(picked != null && picked != _date){
-        print('Time selected:  ${_endTime.toString()}');
+      ));
+      if(picked != null){
         setState(() {
-          _endTime = picked as TimeOfDay;
+          _endTime = picked;
         });
+        print('Time selected:  ${_endTime.toString()}');
+
       }
     }
 
@@ -85,11 +91,29 @@ class _Calendar extends State<Calendar>{
               SizedBox(height: 10),
               new RaisedButton(
                 child: new Text('Submit Ride'),
-                onPressed: (){_selectDate(context);},
+                onPressed: (){//_selectDate(context);
+                addToDatabase();},
               ),
             ],
           ),
           ),
       );
+    }
+
+
+    void addToDatabase() async {
+      //if(globals.registeredSuccessfully == true) {
+        Map <String, dynamic> rideData = {
+          'date': this._date.toString(),
+          'start_time': this._startTime.toString(),
+          'end_time': this._endTime.toString(),
+          'address': this._address.toString(),
+          //'uid' : this._userID
+        };
+        crudObj.addRide(rideData).catchError((e) {
+          print(e);
+        });
+       // moveToLogin(); This should clear all values and let you submit a new ride
+      //}
     }
 }
