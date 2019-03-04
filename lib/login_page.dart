@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
               validateAndSubmit();
              // Navigator.of(context).pop();
               if(globals.registeredSuccessfully) {
-                Map userData = {
+                Map<String,dynamic> userData = {
                   'email': this._email,
                   'fname': this._fname,
                   'lname': this._lname,
