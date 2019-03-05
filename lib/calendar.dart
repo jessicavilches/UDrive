@@ -9,12 +9,23 @@ class Calendar extends StatefulWidget{
 }
 
 class _Calendar extends State<Calendar>{
+    final formKey = new GlobalKey<FormState>();
     DateTime _date = new DateTime.now();
     TimeOfDay _startTime = new TimeOfDay.now();
     TimeOfDay _endTime = new TimeOfDay.now();
-    String _address;
+    String _startAddress;
+    String _endAddress;
+    //String _uid;
     crudMethods crudObj = new crudMethods();
 
+    bool validateAndSave() {
+      final form = formKey.currentState;
+      if (form.validate()){
+        form.save();
+        return true;
+      }
+      return false;
+    }
     void _selectDate(BuildContext context) async{
       final DateTime picked = await showDatePicker(
           context: context,
@@ -63,8 +74,9 @@ class _Calendar extends State<Calendar>{
       return new Scaffold(
         body: new Container(
           padding: EdgeInsets.all(32.0),
+            child: new Form(
+              key: formKey,
             child: new ListView(
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
             SizedBox(height: 100),
               new RaisedButton(
@@ -89,9 +101,14 @@ class _Calendar extends State<Calendar>{
               ),
               SizedBox(height: 20),
               new TextFormField(
-                decoration: new InputDecoration(labelText: 'Address'),
-                validator: (value) => value.isEmpty ? 'Address can\'t be empty' : null,
-                onSaved: (value) => _address = value,
+                decoration: new InputDecoration(labelText: 'Start Address'),
+                validator: (value) => value.isEmpty ? 'Start Address can\'t be empty' : null,
+                onSaved: (value) => _startAddress = value,
+              ),
+              new TextFormField(
+              decoration: new InputDecoration(labelText: 'End Address'),
+              validator: (value) => value.isEmpty ? 'Start Address can\'t be empty' : null,
+              onSaved: (value) => _endAddress = value,
               ),
               SizedBox(height: 40),
               new RaisedButton(
@@ -101,23 +118,26 @@ class _Calendar extends State<Calendar>{
               ),
             ],
           ),
+            )
           ),
       );
     }
 
 
     void addToDatabase() async {
-      //if(globals.registeredSuccessfully == true) {
-        Map <String, dynamic> rideData = {
-          'date': this._date.toString(),
-          'start_time': this._startTime.toString(),
-          'end_time': this._endTime.toString(),
-          'address': this._address.toString(),
-          //'uid' : this._userID
-        };
-        crudObj.addRide(rideData).catchError((e) {
-          print(e);
-        });
+        if(validateAndSave()) {
+          Map <String, dynamic> rideData = {
+            'date': this._date.toString(),
+            'start_time': this._startTime.toString(),
+            'end_time': this._endTime.toString(),
+            'start_address': this._startAddress,
+            'end_address': this._endAddress,
+            'uid' : globals.get_userID()
+          };
+          crudObj.addRide(rideData).catchError((e) {
+            print(e);
+          });
+        }
        // moveToLogin(); This should clear all values and let you submit a new ride
       //}
     }

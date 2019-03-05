@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   String _mode;
-  String _userID;
+ // String _userID;
   FormType _formType = FormType.login;
 
   crudMethods crudObj = new crudMethods();
@@ -52,39 +52,21 @@ class _LoginPageState extends State<LoginPage> {
             print('Signed in: $userId');
             widget.onSignedIn();
           }
-          /*
-          FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
-          if(user.isEmailVerified || user == null){
-            print('Signed in: ${user.uid}');
-          }
-          else if (!user.isEmailVerified) {
-            FirebaseAuth.instance.signOut();
-            _showDialogAlertGivenMessage('Please verify your email');
-          }
-          */
+
         } else if (_formType == FormType.register) {
             //The following code will be used when we want to validate only users that have .edu on their email
             if(_email.substring(_email.length - 4, _email.length) != '.edu'){
               globals.registeredSuccessfully = false;
               _showDialogAlertGivenMessage('The email needs to end with ".edu"');
             } else {
-              /*
-              FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
-              globals.registeredSuccessfully = true;
-              user.sendEmailVerification();
-              print('Registered user: ${user.uid}');
-              _userID = '${user.uid}';
-              */
+
               String userId = await widget.auth.createUserWithEmailAndPassword(_email, _password);
-              //_onRegistration(true);
               globals.registeredSuccessfully = true;
-              this._userID = userId;
+              globals.set_userID(userId);
               print('Registered user: $userId');
               _showDialogAlertGivenMessage('Registration completed. Please verify your email address');
-              //widget.onSignedIn();
             }
         } else if(_formType == FormType.forget){
-          //FirebaseAuth.instance.sendPasswordResetEmail(email: _email);
           String result = await widget.auth.sendPasswordResetEmail(this._email);
           _showDialogAlertGivenMessage("If email exists, we will send an email with a link to reset your password.");
         }
@@ -129,7 +111,6 @@ class _LoginPageState extends State<LoginPage> {
         child: new Form(
           key: formKey,
           child: new ListView(
-            //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: buildInputs() + buildSubmitButtons(),
           ),
         ),
@@ -311,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
         'fname': this._fname,
         'lname': this._lname,
         'mode': this._mode,
-        'uid' : this._userID
+        'uid' : globals.get_userID()
       };
       crudObj.addData(userData).catchError((e) {
         print(e);

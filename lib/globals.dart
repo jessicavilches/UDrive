@@ -2,6 +2,16 @@ library UDriveTest.globals;
 
 bool registeredSuccessfully;
 bool loggedSuccessfully;
+String _userID = "";
+
+void set_userID(String uid)
+{
+  _userID = uid;
+}
+String get_userID()
+{
+  return _userID;
+}
 
 var UserModes = ['Rider', 'Driver', 'Driver/Rider'];
 var currentItemSelected = UserModes[0];

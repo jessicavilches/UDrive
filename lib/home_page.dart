@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
 import 'calendar.dart';
+import 'feed.dart';
 
 class HomePage extends StatefulWidget{
   HomePage({this.auth, this.onSignedOut});
@@ -14,18 +15,30 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage>{
   int currentTab = 0;
   Calendar calendar;
+  Feed feed;
 
   List<Widget> pages;
   Widget currentPage;
 
+
   @override
   void initState(){
     calendar = Calendar();
+    feed = Feed();
     currentPage = calendar;
 
-    pages = [calendar];
+    pages = [calendar,feed];
 
     super.initState();
+  }
+
+  void moveToFeed()
+  {
+    setState(() {
+      currentPage = feed;
+      currentTab = 1;
+    });
+
   }
 
   void _signOut() async
@@ -67,15 +80,15 @@ class _HomePageState extends State<HomePage>{
               icon: new Icon(Icons.calendar_today),
               iconSize: 40,
             ),
-            title: Text('Calendar'),
+            title: Text('Create Ride'),
           ),
           BottomNavigationBarItem(
             icon: new IconButton(
                 icon: new Icon(Icons.local_taxi),
                 iconSize: 40,
-                onPressed: null
+                onPressed: moveToFeed
             ),
-            title: Text('Ride History'),
+            title: Text('Feed'),
           ),
           BottomNavigationBarItem(
             icon: new IconButton(
@@ -84,6 +97,7 @@ class _HomePageState extends State<HomePage>{
                 onPressed: null
             ),
             title: Text('Settings'),
+
           ),
           BottomNavigationBarItem(
             icon: new IconButton(

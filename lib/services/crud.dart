@@ -30,4 +30,8 @@ class crudMethods {
       });
     //}
   }
+
+  getData() async{
+    return await Firestore.instance.collection("Rides").getDocuments();
+  }
 }
