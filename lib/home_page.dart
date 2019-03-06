@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage>{
     calendar = Calendar();
     feed = Feed();
     currentPage = calendar;
-
+    currentTab = 0;
     pages = [calendar,feed];
 
     super.initState();
@@ -37,6 +37,14 @@ class _HomePageState extends State<HomePage>{
     setState(() {
       currentPage = feed;
       currentTab = 1;
+    });
+
+  }
+  void moveToCalendar()
+  {
+    setState(() {
+      currentPage = calendar;
+      currentTab = 0;
     });
 
   }
@@ -79,6 +87,7 @@ class _HomePageState extends State<HomePage>{
             icon: new IconButton(
               icon: new Icon(Icons.calendar_today),
               iconSize: 40,
+              onPressed: moveToCalendar,
             ),
             title: Text('Create Ride'),
           ),

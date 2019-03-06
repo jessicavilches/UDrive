@@ -29,21 +29,31 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
 
+  Future _data;
+
   Future getPosts() async {
     var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection('Rides').getDocuments();
-    for(int i = 0; i < qn.documents.length;i++)
-      {
-        print(qn.documents[i].data["date"]);
-      }
+    QuerySnapshot qn = await firestore.collection('Rides').getDocuments(); // move to crud
+
     return qn.documents;
+  }
+
+  navigateToDetail(DocumentSnapshot ride){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(ride: ride,)));
+  }
+
+  @override
+  initState() {
+
+    super.initState();
+    _data = getPosts();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-          future: getPosts(),
+          future: _data,
           builder: (_,snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -53,13 +63,35 @@ class _ListPageState extends State<ListPage> {
               return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) {
+                    return Card(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text('\nDate: '+ snapshot.data[index].data["date"] + '\n'),
+                          Text('Start Address: ' + snapshot.data[index].data["start_address"]),
+                          Text('End Address: '+ snapshot.data[index].data["end_address"]),
+                          Text('Start Time: ' + snapshot.data[index].data["start_time"]),
+                          Text('End Time: ' + snapshot.data[index].data["end_time"]),
+                          ButtonTheme.bar( // make buttons use the appropriate styles for cards
+                            child: ButtonBar(
+                              children: <Widget>[
+                                FlatButton(
+                                  child: const Text('View'),
+                                  onPressed: () => navigateToDetail(snapshot.data[index]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
 
-                    return ListTile(
+                    /*return ListTile(
                       title: Text(snapshot.data[index].data["date"]), //sub in fname, lname etc
                       subtitle: Text(snapshot.data[index].data["start_address"]),
                       //subtitle: Text(snapshot.data[index].data["end_address"]),
 
-                    );
+                    );*/
                   });
             }
           }),
@@ -68,15 +100,39 @@ class _ListPageState extends State<ListPage> {
 }
 
 class DetailPage extends StatefulWidget {
+  final DocumentSnapshot ride;
+  DetailPage({this.ride});
   @override
   _DetailPageState createState() => _DetailPageState();
 }
 class _DetailPageState extends State<DetailPage>{
   @override
   Widget build(BuildContext context){
-    return Container();
+    return Scaffold (
+      appBar: AppBar(
+        title: Text(widget.ride.data["date"]),
+      ),
+      body: Container(
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text('\nDate: '+ widget.ride.data["date"] + '\n'),
+            Text('Start Address: ' + widget.ride.data["start_address"]),
+            Text('End Address: '+ widget.ride.data["end_address"]),
+            Text('Start Time: ' + widget.ride.data["start_time"]),
+            Text('End Time: ' + widget.ride.data["end_time"]),
+
+          ],
+        ),
+        /*child: ListTile(
+          title: Text(widget.ride.data["date"]),
+          subtitle: Text(widget.ride.data["start_address"]),
+        ),*/
+      ),
+    ),
+    );
   }
 }
 
 
- 
