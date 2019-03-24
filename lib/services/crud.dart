@@ -31,6 +31,13 @@ class crudMethods {
     //}
   }
 
+  Future<void> addRideCatalog(rideCatalog) async {
+    Firestore.instance.collection("RideCatalog").add(rideCatalog).catchError((e) {
+      print(e);
+    });
+
+  }
+
   getData() async{
     return await Firestore.instance.collection("Rides").getDocuments();
   }

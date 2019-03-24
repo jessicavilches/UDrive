@@ -31,6 +31,7 @@ class _ListPageState extends State<ListPage> {
 
   Future _data;
 
+
   Future getPosts() async {
     var firestore = Firestore.instance;
     QuerySnapshot qn = await firestore.collection('Rides').getDocuments(); // move to crud
@@ -99,6 +100,7 @@ class _ListPageState extends State<ListPage> {
   }
 }
 
+
 class DetailPage extends StatefulWidget {
   final DocumentSnapshot ride;
   DetailPage({this.ride});
@@ -106,6 +108,18 @@ class DetailPage extends StatefulWidget {
   _DetailPageState createState() => _DetailPageState();
 }
 class _DetailPageState extends State<DetailPage>{
+  final formKey = new GlobalKey<FormState>();
+  crudMethods crudObj = new crudMethods();
+
+  bool validateAndSave() {
+    final form = formKey.currentState;
+    if (form.validate()){
+      form.save();
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold (
@@ -122,17 +136,47 @@ class _DetailPageState extends State<DetailPage>{
             Text('End Address: '+ widget.ride.data["end_address"]),
             Text('Start Time: ' + widget.ride.data["start_time"]),
             Text('End Time: ' + widget.ride.data["end_time"]),
-
-          ],
+          ButtonTheme.bar( // make buttons use the appropriate styles for cards
+            child: ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: const Text('Request Ride'),
+                  onPressed: () => addToDatabase(),
+                ),
+              ],
+            ),
+          ),
+          ]
         ),
-        /*child: ListTile(
-          title: Text(widget.ride.data["date"]),
-          subtitle: Text(widget.ride.data["start_address"]),
-        ),*/
       ),
     ),
     );
   }
+
+
+
+
+  void addToDatabase() async {
+    //if(validateAndSave()) {
+      Map <String, dynamic> rideCatalog = {
+        'date': widget.ride.data["date"],
+        'start_time': widget.ride.data["start_time"],
+        'end_time': widget.ride.data["end_time"],
+        'start_address': widget.ride.data["start_address"],
+        'end_address': widget.ride.data["end_address"],
+        'rider_id' : globals.get_userID(),
+        'driver_id' : widget.ride.data["uid"],
+        'status' : "Pending",
+      };
+      crudObj.addRideCatalog(rideCatalog).catchError((e) {
+        print(e);
+      });
+    //}
+    // moveToLogin(); This should clear all values and let you submit a new ride
+    //}
+  }
+
+
 }
 
 

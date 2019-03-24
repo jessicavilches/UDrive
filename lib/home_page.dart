@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'auth.dart';
 import 'calendar.dart';
 import 'feed.dart';
+import 'rides.dart';
 
 class HomePage extends StatefulWidget{
   HomePage({this.auth, this.onSignedOut});
@@ -16,6 +17,7 @@ class _HomePageState extends State<HomePage>{
   int currentTab = 0;
   Calendar calendar;
   Feed feed;
+  Rides rides;
 
   List<Widget> pages;
   Widget currentPage;
@@ -25,9 +27,10 @@ class _HomePageState extends State<HomePage>{
   void initState(){
     calendar = Calendar();
     feed = Feed();
+    rides = Rides();
     currentPage = calendar;
     currentTab = 0;
-    pages = [calendar,feed];
+    pages = [calendar,feed, rides];
 
     super.initState();
   }
@@ -48,6 +51,15 @@ class _HomePageState extends State<HomePage>{
     });
 
   }
+
+     void moveToRides()
+      {
+        setState(() {
+          currentPage = rides;
+          currentTab = 2;
+        });
+
+      }
 
   void _signOut() async
   {
@@ -112,7 +124,7 @@ class _HomePageState extends State<HomePage>{
             icon: new IconButton(
                 icon: new Icon(Icons.local_taxi),
                 iconSize: 40,
-                onPressed: null
+                onPressed: moveToRides
             ),
             title: Text('Ride History'),
           ),
