@@ -56,15 +56,13 @@ class _HomePageState extends State<HomePage>{
 
   }
 
-     void moveToRides()
-      {
-        setState(() {
-          currentPage = rides;
-          currentTab = 2;
-        });
-
-      }
-
+  void moveToRides()
+  {
+    setState(() {
+      currentPage = rides;
+      currentTab = 3;
+    });
+  }
       Future <void> moveToSettings() async {
     await globals.getFname();
     await globals.getLname();
@@ -128,17 +126,7 @@ class _HomePageState extends State<HomePage>{
                 onPressed: moveToFeed
             ),
             title: Text('Feed'),
-          ),
-          BottomNavigationBarItem(
-            icon: new IconButton(
-                icon: new Icon(Icons.settings),
-                iconSize: 40,
-                onPressed: moveToSettings,
-            ),
-            title: Text('Settings'),
-
-          ),
-          BottomNavigationBarItem(
+          ),BottomNavigationBarItem(
             icon: new IconButton(
                 icon: new Icon(Icons.local_taxi),
                 iconSize: 40,
@@ -148,12 +136,13 @@ class _HomePageState extends State<HomePage>{
           ),
           BottomNavigationBarItem(
             icon: new IconButton(
-                icon: new Icon(Icons.home),
+                icon: new Icon(Icons.settings),
                 iconSize: 40,
-                onPressed: null
+                onPressed: moveToSettings,
             ),
-            title: Text('Home'),
+            title: Text('Settings'),
           ),
+
         ],
         type: BottomNavigationBarType.fixed,
         fixedColor: Colors.pink,
