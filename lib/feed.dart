@@ -50,6 +50,8 @@ class _ListPageState extends State<ListPage> {
     _data = getPosts();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,11 +70,11 @@ class _ListPageState extends State<ListPage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Text('\nDate: '+ snapshot.data[index].data["date"] + '\n'),
+                          Text('\nDate: '+ globals.formatDate(snapshot.data[index].data["date"]) + '\n'),
                           Text('Start Address: ' + snapshot.data[index].data["start_address"]),
                           Text('End Address: '+ snapshot.data[index].data["end_address"]),
-                          Text('Start Time: ' + snapshot.data[index].data["start_time"]),
-                          Text('End Time: ' + snapshot.data[index].data["end_time"]),
+                          Text('Start Time: ' + globals.formatTime(snapshot.data[index].data["start_time"])),
+                          Text('End Time: ' + globals.formatTime(snapshot.data[index].data["end_time"])),
                           ButtonTheme.bar( // make buttons use the appropriate styles for cards
                             child: ButtonBar(
                               children: <Widget>[
@@ -86,13 +88,6 @@ class _ListPageState extends State<ListPage> {
                         ],
                       ),
                     );
-
-                    /*return ListTile(
-                      title: Text(snapshot.data[index].data["date"]), //sub in fname, lname etc
-                      subtitle: Text(snapshot.data[index].data["start_address"]),
-                      //subtitle: Text(snapshot.data[index].data["end_address"]),
-
-                    );*/
                   });
             }
           }),
@@ -124,18 +119,18 @@ class _DetailPageState extends State<DetailPage>{
   Widget build(BuildContext context){
     return Scaffold (
       appBar: AppBar(
-        title: Text(widget.ride.data["date"]),
+        title: Text(globals.formatDate(widget.ride.data["date"])),
       ),
       body: Container(
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text('\nDate: '+ widget.ride.data["date"] + '\n'),
+            Text('\nDate: '+ globals.formatDate(widget.ride.data["date"]) + '\n'),
             Text('Start Address: ' + widget.ride.data["start_address"]),
             Text('End Address: '+ widget.ride.data["end_address"]),
-            Text('Start Time: ' + widget.ride.data["start_time"]),
-            Text('End Time: ' + widget.ride.data["end_time"]),
+            Text('Start Time: ' + globals.formatTime(widget.ride.data["start_time"])),
+            Text('End Time: ' + globals.formatTime(widget.ride.data["end_time"])),
           ButtonTheme.bar( // make buttons use the appropriate styles for cards
             child: ButtonBar(
               children: <Widget>[
@@ -152,10 +147,6 @@ class _DetailPageState extends State<DetailPage>{
     ),
     );
   }
-
-
-
-
   void addToDatabase() async {
     //if(validateAndSave()) {
       Map <String, dynamic> rideCatalog = {

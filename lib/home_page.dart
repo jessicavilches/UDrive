@@ -3,6 +3,7 @@ import 'auth.dart';
 import 'calendar.dart';
 import 'feed.dart';
 import 'rides.dart';
+import 'settings.dart';
 
 class HomePage extends StatefulWidget{
   HomePage({this.auth, this.onSignedOut});
@@ -18,6 +19,7 @@ class _HomePageState extends State<HomePage>{
   Calendar calendar;
   Feed feed;
   Rides rides;
+  Settings settings;
 
   List<Widget> pages;
   Widget currentPage;
@@ -28,9 +30,10 @@ class _HomePageState extends State<HomePage>{
     calendar = Calendar();
     feed = Feed();
     rides = Rides();
+    settings = Settings();
     currentPage = calendar;
     currentTab = 0;
-    pages = [calendar,feed, rides];
+    pages = [calendar,feed, rides, settings];
 
     super.initState();
   }
@@ -49,17 +52,22 @@ class _HomePageState extends State<HomePage>{
       currentPage = calendar;
       currentTab = 0;
     });
-
   }
 
-     void moveToRides()
-      {
-        setState(() {
-          currentPage = rides;
-          currentTab = 2;
-        });
-
-      }
+  void moveToRides()
+  {
+    setState(() {
+      currentPage = rides;
+      currentTab = 2;
+    });
+  }
+  void moveToSettings()
+  {
+    setState(() {
+      currentPage = settings;
+      currentTab = 3;
+    });
+  }
 
   void _signOut() async
   {
@@ -110,17 +118,7 @@ class _HomePageState extends State<HomePage>{
                 onPressed: moveToFeed
             ),
             title: Text('Feed'),
-          ),
-          BottomNavigationBarItem(
-            icon: new IconButton(
-                icon: new Icon(Icons.settings),
-                iconSize: 40,
-                onPressed: null
-            ),
-            title: Text('Settings'),
-
-          ),
-          BottomNavigationBarItem(
+          ),  BottomNavigationBarItem(
             icon: new IconButton(
                 icon: new Icon(Icons.local_taxi),
                 iconSize: 40,
@@ -130,11 +128,11 @@ class _HomePageState extends State<HomePage>{
           ),
           BottomNavigationBarItem(
             icon: new IconButton(
-                icon: new Icon(Icons.home),
+                icon: new Icon(Icons.settings),
                 iconSize: 40,
-                onPressed: null
+                onPressed: moveToSettings
             ),
-            title: Text('Home'),
+            title: Text('Settings'),
           ),
         ],
         type: BottomNavigationBarType.fixed,
