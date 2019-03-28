@@ -11,6 +11,27 @@ String address = "";
 
 crudMethods crudObj = new crudMethods();
 
+String formatDate(date)
+{
+  return (date.substring(5,7) + "/" + date.substring(8,10) + "/" + date.substring(0, 4));
+}
+
+String formatTime(time)
+{
+  String AMorPM;
+  String minute = time.substring(13,15);
+  String hour = time.substring(10,12);
+  if(int.parse(hour) < 12)
+    AMorPM = "am";
+  else{
+    AMorPM = "pm";
+    int hourNum = int.parse(hour);
+    hourNum = hourNum - 12;
+    hour = hourNum.toString();
+  }
+  return (hour + ":" + minute + AMorPM);
+}
+
 
 void set_userID(String uid)
 {
