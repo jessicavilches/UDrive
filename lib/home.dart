@@ -3,6 +3,8 @@ import 'auth.dart';
 import 'calendar.dart';
 import 'feed.dart';
 import 'rides.dart';
+import 'settings.dart';
+import 'globals.dart' as globals;
 
 class HomePage extends StatefulWidget{
   HomePage({this.auth, this.onSignedOut});
@@ -17,6 +19,7 @@ class _HomePageState extends State<HomePage>{
   int currentTab = 0;
   Calendar calendar;
   Feed feed;
+  Settings settings;
   Rides rides;
 
   List<Widget> pages;
@@ -28,9 +31,10 @@ class _HomePageState extends State<HomePage>{
     calendar = Calendar();
     feed = Feed();
     rides = Rides();
+    settings = Settings();
     currentPage = calendar;
     currentTab = 0;
-    pages = [calendar,feed, rides];
+    pages = [calendar,feed, rides, settings];
 
     super.initState();
   }
@@ -61,13 +65,27 @@ class _HomePageState extends State<HomePage>{
 
       }
 
+      Future <void> moveToSettings() async {
+    await globals.getFname();
+    await globals.getLname();
+    await globals.getAddress();
+    await globals.getMode();
+
+    setState(() {
+      currentPage = settings;
+      currentTab = 3;
+    });
+      }
+
   void _signOut() async
   {
     try{
       await widget.auth.signOut();
       widget.onSignedOut();
+      Navigator.of(context).pushReplacementNamed('/login');
     } catch (e) {
       print(e);
+      Navigator.of(context).pushReplacementNamed('/login');
     }
   }
 
@@ -115,7 +133,7 @@ class _HomePageState extends State<HomePage>{
             icon: new IconButton(
                 icon: new Icon(Icons.settings),
                 iconSize: 40,
-                onPressed: null
+                onPressed: moveToSettings,
             ),
             title: Text('Settings'),
 

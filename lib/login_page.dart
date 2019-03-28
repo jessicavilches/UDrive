@@ -41,16 +41,41 @@ class _LoginPageState extends State<LoginPage> {
     return false;
   }
 
+  void getFname() async {
+    await crudObj.getFname(globals.get_userID());
+  }
+
+  void getLname() async {
+    await crudObj.getLname(globals.get_userID());
+  }
+
+  void getAddress() async {
+    await crudObj.getAddress(globals.get_userID());
+  }
+  void getMode() async {
+    await crudObj.getMode(globals.get_userID());
+  }
+
+
+
   Future<void> validateAndSubmit() async{
     if(validateAndSave()){
       try {
         if(_formType == FormType.login) {
           String userId = await widget.auth.signInWithEmailAndPassword(_email, _password);
+
           if(userId == null){
             _showDialogAlertGivenMessage('Please verify your email');
           } else {
             print('Signed in: $userId');
-            widget.onSignedIn();
+            globals.set_userID(userId);
+            await getFname();
+            await getLname();
+            await getAddress();
+            await getMode();
+
+            //widget.onSignedIn();
+            Navigator.of(context).pushReplacementNamed('/homepage');
           }
 
         } else if (_formType == FormType.register) {

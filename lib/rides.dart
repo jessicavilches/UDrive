@@ -47,7 +47,7 @@ class _Rides extends State<Rides> with SingleTickerProviderStateMixin {
       body: new TabBarView(
         controller: controller,
         children: <Widget> [
-          //new past.PastRides(),
+          new past.PastRides(),
           //new upcoming.UpcomingRides(),
           //new pending.PendingRides()
         ]

@@ -18,7 +18,8 @@ class Auth implements BaseAuth{
     }
     else if (!user.isEmailVerified) {
       FirebaseAuth.instance.signOut();
-      return null;
+      //return null;
+      return user.uid;
     }
   }
 

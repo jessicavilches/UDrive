@@ -1,8 +1,15 @@
 library UDriveTest.globals;
+import 'services/crud.dart';
 
 bool registeredSuccessfully;
 bool loggedSuccessfully;
-String _userID = "";
+String _userID = 'FkWddb7FPjXz7Q4O3nnAlkx56wz2';
+String fname = "";
+String lname = "";
+String mode = "";
+String address = "";
+
+crudMethods crudObj = new crudMethods();
 
 
 void set_userID(String uid)
@@ -12,6 +19,20 @@ void set_userID(String uid)
 String get_userID()
 {
   return _userID;
+}
+
+void getFname() async {
+  await crudObj.getFname(get_userID());
+}
+
+void getLname() async {
+  await crudObj.getLname(get_userID());
+}
+void getAddress() async {
+  await crudObj.getAddress(get_userID());
+}
+void getMode() async {
+  await crudObj.getMode(get_userID());
 }
 
 var UserModes = ['Rider', 'Driver', 'Driver/Rider'];

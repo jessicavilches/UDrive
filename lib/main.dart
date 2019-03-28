@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
 import 'auth.dart';
-import 'home_page.dart';
+import 'home.dart';
 import 'root_page.dart';
 
 void main() => runApp(MyApp());
@@ -15,8 +15,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: HomePage(),
-      //home: new LoginPage(auth: new Auth()),
+      //home: HomePage(),
+      home: new LoginPage(auth: new Auth()),
+      routes: <String, WidgetBuilder> {
+        '/homepage': (BuildContext context) => new HomePage(),
+        '/login': (BuildContext context) => new LoginPage(),
+      }
       //home: new RootPage(auth: new Auth()),
     );
   }
