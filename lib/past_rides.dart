@@ -39,14 +39,19 @@ class _ListPageState extends State<ListPage> {
     var firestore = Firestore.instance;
     QuerySnapshot qn = await firestore.collection('RideCatalog').getDocuments(); // move to crud
     await qn.documents.forEach((DocumentSnapshot document) {
-      if(document.data['status'] == "Pending") {
+      //print("testing if date conversion function works:");
+      //print(diff_dates('2019-03-05 00:00:00.000'));
+      if((document.data['status'] == "Accepted"))// & (diff_dates(document.data['date'])>0))
+      {
+        if (globals.diff_dates(document.data['date'])>0) {
+        print(globals.diff_dates(document.data['date']));
         /// add in "if" statement to check if date is after today
-        print(document.data['start_address']);
-        print(i);
+        //print(document.data['start_address']);
+        //print(i);
         documentList.insert(i, document);
         i++;
         print("got here");
-      }
+      }}
     });
     //return qn.documents;
     return documentList.cast<dynamic>();

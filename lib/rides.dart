@@ -48,6 +48,8 @@ class _Rides extends State<Rides> with SingleTickerProviderStateMixin {
         controller: controller,
         children: <Widget> [
           new past.PastRides(),
+          new upcoming.UpcomingRides(),
+          new pending.PendingRides(),
           //new upcoming.UpcomingRides(),
           //new pending.PendingRides()
         ]

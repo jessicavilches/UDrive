@@ -3,13 +3,27 @@ import 'services/crud.dart';
 
 bool registeredSuccessfully;
 bool loggedSuccessfully;
-String _userID = 'FkWddb7FPjXz7Q4O3nnAlkx56wz2';
+String _userID = '';
 String fname = "";
 String lname = "";
 String mode = "";
 String address = "";
 
 crudMethods crudObj = new crudMethods();
+
+DateTime convertDateFromString(String strDate){
+  DateTime todayDate = DateTime.parse(strDate);
+  print(todayDate);
+  return todayDate;
+  //print(formatDate(todayDate, [yyyy, '/', mm, '/', dd, ' ', hh, ':', nn, ':', ss, ' ', am]));
+}
+
+int diff_dates(String date) {
+  final current_date = DateTime.now();
+  final ride_date = convertDateFromString(date);
+  return current_date.difference(ride_date).inDays;
+}
+
 
 String formatDate(date)
 {
