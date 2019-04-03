@@ -89,16 +89,16 @@ class _ListPageState extends State<ListPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                              '\nDate: ' + snapshot.data[index].data["date"] +
+                              '\nDate: ' + globals.formatDate(snapshot.data[index].data["date"]) +
                                   '\n'),
                           Text('Start Address: ' +
                               snapshot.data[index].data["start_address"]),
                           Text('End Address: ' +
                               snapshot.data[index].data["end_address"]),
                           Text('Start Time: ' +
-                              snapshot.data[index].data["start_time"]),
+                              globals.formatTime(snapshot.data[index].data["start_time"])),
                           Text('End Time: ' +
-                              snapshot.data[index].data["end_time"]),
+                              globals.formatTime(snapshot.data[index].data["end_time"])),
                           ButtonTheme
                               .bar( // make buttons use the appropriate styles for cards
                             child: ButtonBar(
@@ -152,11 +152,11 @@ class _DetailPageState extends State<DetailPage>{
           child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('\nDate: '+ widget.ride.data["date"] + '\n'),
+                Text('\nDate: '+ globals.formatDate(widget.ride.data["date"]) + '\n'),
                 Text('Start Address: ' + widget.ride.data["start_address"]),
                 Text('End Address: '+ widget.ride.data["end_address"]),
-                Text('Start Time: ' + widget.ride.data["start_time"]),
-                Text('End Time: ' + widget.ride.data["end_time"]),
+                Text('Start Time: ' + globals.formatTime(widget.ride.data["start_time"])),
+                Text('End Time: ' + globals.formatTime(widget.ride.data["end_time"])),
               ]
           ),
         ),

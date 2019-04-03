@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage>{
   {
     setState(() {
       currentPage = rides;
-      currentTab = 3;
+      currentTab = 2;
     });
   }
       Future <void> moveToSettings() async {

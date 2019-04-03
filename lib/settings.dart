@@ -67,7 +67,7 @@ class _Settings extends State<Settings>{
     return [
       new TextFormField(
         initialValue: globals.fname,
-        decoration: new InputDecoration(labelText: 'Full Name'),
+        decoration: new InputDecoration(labelText: 'First Name'),
         validator: (value) => value.isEmpty ? 'First name can\'t be empty' : null,
         onSaved: (value) => _fname = value,
       ),
