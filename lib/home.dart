@@ -107,7 +107,6 @@ class _HomePageState extends State<HomePage>{
           setState(() {
               //print(index);
               currentTab = index;
-              currentPage = calendar;
           });
         },
         items: <BottomNavigationBarItem>[
