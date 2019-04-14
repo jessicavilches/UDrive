@@ -145,7 +145,7 @@ class _DetailPageState extends State<DetailPage>{
   Widget build(BuildContext context){
     return Scaffold (
       appBar: AppBar(
-        title: Text(widget.ride.data["date"]),
+        title: Text(globals.formatDate(widget.ride.data["date"])),
       ),
       body: Container(
         child: Card(
@@ -187,9 +187,15 @@ class _DetailPageState extends State<DetailPage>{
       'end_time': widget.ride.data["end_time"],
       'start_address': widget.ride.data["start_address"],
       'end_address': widget.ride.data["end_address"],
-      'rider_id' : globals.get_userID(),
-      'driver_id' : widget.ride.data["uid"],
-      'status' : choice,
+      'mid_address': widget.ride.data["mid_address"],
+      'rider_id': widget.ride.data["rider_id"],
+      'driver_id': widget.ride.data["driver_id"],
+      'driver_name': widget.ride.data["driver_name"],
+      'rider_name': widget.ride.data["rider_name"],
+      'arrival_time':widget.ride.data["arrival_time"],
+      'bid_amount': widget.ride.data["bid_amount"],
+      'status': choice,
+
     };
     Firestore.instance.collection("RideCatalog").document(docID).setData(rideCatalog).catchError((e) {
       print(e);

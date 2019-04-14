@@ -56,8 +56,15 @@ class _HomePageState extends State<HomePage>{
 
   }
 
-  void moveToRides()
+  Future <void> moveToRides() async
   {
+    await globals.getFname();
+    await globals.getLname();
+    await globals.getAddress();
+    await globals.getMode();
+    print("Address: ");
+    print(globals.address);
+
     setState(() {
       currentPage = rides;
       currentTab = 2;
@@ -91,7 +98,7 @@ class _HomePageState extends State<HomePage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: new AppBar(
-        title: new Text('Welcome', style: new TextStyle(fontSize: 20.0)),
+        title: new Text('UDrive', style: new TextStyle(fontSize: 20.0)),
         actions: <Widget>[
           new FlatButton(
               child: new Text('Logout', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
@@ -127,11 +134,11 @@ class _HomePageState extends State<HomePage>{
             title: Text('Feed'),
           ),BottomNavigationBarItem(
             icon: new IconButton(
-                icon: new Icon(Icons.local_taxi),
+                icon: new Icon(Icons.history),
                 iconSize: 40,
                 onPressed: moveToRides
             ),
-            title: Text('Ride History'),
+            title: Text('Ride Log'),
           ),
           BottomNavigationBarItem(
             icon: new IconButton(
@@ -144,7 +151,7 @@ class _HomePageState extends State<HomePage>{
 
         ],
         type: BottomNavigationBarType.fixed,
-        fixedColor: Colors.pink,
+        fixedColor: Colors.amber,
       ),
     );
   }

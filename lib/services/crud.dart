@@ -50,8 +50,8 @@ class crudMethods {
     //}
   }
 
-  Future<void> addRideCatalog(rideCatalog) async {
-    Firestore.instance.collection("RideCatalog").add(rideCatalog).catchError((e) {
+  Future<void> addRideCatalog(rideCatalog, String hashVal) async {
+    Firestore.instance.collection("RideCatalog").document(hashVal).setData(rideCatalog).catchError((e) {
       print(e);
     });
 

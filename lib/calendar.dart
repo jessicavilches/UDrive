@@ -132,6 +132,7 @@ class _Calendar extends State<Calendar>{
             'end_time': this._endTime.toString(),
             'start_address': this._startAddress,
             'end_address': this._endAddress,
+            'driver_name': globals.fname,
             'uid' : globals.get_userID()
           };
           crudObj.addRide(rideData).catchError((e) {

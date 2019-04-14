@@ -145,7 +145,7 @@ class _DetailPageState extends State<DetailPage>{
   Widget build(BuildContext context){
     return Scaffold (
       appBar: AppBar(
-        title: Text(widget.ride.data["date"]),
+        title: Text(globals.formatDate(widget.ride.data["date"])),
       ),
       body: Container(
         child: Card(
