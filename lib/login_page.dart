@@ -129,7 +129,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('UDrive', textScaleFactor: 2,),
+        backgroundColor: Colors.blue[900],
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
@@ -220,7 +221,8 @@ class _LoginPageState extends State<LoginPage> {
     if(_formType == FormType.login) {
       return [
         new RaisedButton(
-          child: new Text('Login', style: new TextStyle(fontSize: 20.0)),
+          child: new Text('Log in', style: new TextStyle(fontSize: 20.0, color: Colors.white), ),
+          color: Colors.blueGrey,
           onPressed: validateAndSubmit,
         ),
         new FlatButton (

@@ -20,9 +20,6 @@ class _Settings extends State<Settings>{
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('User Settings'),
-      ),
       body: Container(
         padding: EdgeInsets.all(16.0),
         child: new Form(
@@ -38,8 +35,9 @@ class _Settings extends State<Settings>{
   List<Widget> buildSubmitButtons() {
     return [
       new RaisedButton(
-        child: new Text('Save', style: new TextStyle(fontSize: 20.0)),
+        child: new Text('Save', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
         onPressed: validateAndSubmit,
+          color: Colors.blueGrey
       ),
     ];
   }
@@ -89,6 +87,8 @@ class _Settings extends State<Settings>{
         validator: (value) => value.isEmpty ? 'Address can\'t be empty' : null,
         onSaved: (value) => _address = value,
       ),
+      new Text('\nFormat: Street Address City State Abbreviation ZipCode'),
+      new Text('Example: 1320 S Dixie Hwy Coral Gables FL 33146 \n \n '),
     ];
   }
 

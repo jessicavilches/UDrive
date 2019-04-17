@@ -98,7 +98,8 @@ class _HomePageState extends State<HomePage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: new AppBar(
-        title: new Text('UDrive', style: new TextStyle(fontSize: 20.0)),
+        title: new Text('UDrive', textScaleFactor: 2.0,),
+        backgroundColor: Colors.blue[900],
         actions: <Widget>[
           new FlatButton(
               child: new Text('Logout', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
@@ -151,7 +152,7 @@ class _HomePageState extends State<HomePage>{
 
         ],
         type: BottomNavigationBarType.fixed,
-        fixedColor: Colors.amber,
+        fixedColor: Colors.blue[300],
       ),
     );
   }

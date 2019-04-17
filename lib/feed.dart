@@ -34,13 +34,25 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   Future _data;
+  List<DocumentSnapshot> documentList = new List();
 
 
   Future getPosts() async {
+    int i = 0;
     var firestore = Firestore.instance;
     QuerySnapshot qn = await firestore.collection('Rides').getDocuments(); // move to crud
 
-    return qn.documents;
+    await qn.documents.forEach((DocumentSnapshot document) {
+      print("did i do this");
+      print(globals.diff_dates(document.data["date"]));
+      if (globals.diff_dates(document.data["date"])<=0) {
+        documentList.insert(i, document);
+        i++;
+        print(globals.diff_dates(document.data["date"]));
+      }
+    });
+    return documentList.cast<dynamic>();
+    //return qn.documents;
   }
 
   navigateToDetail(DocumentSnapshot ride){
@@ -105,6 +117,7 @@ class _ListPageState extends State<ListPage> {
               return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) {
+                   // if (globals.diff_dates(snapshot.data[index].data["date"])<0)  {
                     return Card(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -134,7 +147,7 @@ class _ListPageState extends State<ListPage> {
                           ),
                         ],
                       ),
-                    );
+                    ); //}
                   });
             }
           }),

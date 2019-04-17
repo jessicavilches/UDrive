@@ -81,23 +81,26 @@ class _Calendar extends State<Calendar>{
             SizedBox(height: 100),
               new RaisedButton(
                 child: new Text('Select Date: '  + this._date.month.toString()
-                    + '/' + this._date.day.toString() + '/' + this._date.year.toString(), style: new TextStyle(fontSize: 20.0)),
+                    + '/' + this._date.day.toString() + '/' + this._date.year.toString(), style: new TextStyle(fontSize: 20.0, color: Colors.white),),
                 onPressed: (){
                   _selectDate(context);
                   },
+                color: Colors.blueGrey,
               ),
               SizedBox(height: 20),
               new RaisedButton(
-                child: new Text('Select Start Time: ' + this._startTime.format(context), style: new TextStyle(fontSize: 20.0)),
+                child: new Text('Select Start Time: ' + this._startTime.format(context), style: new TextStyle(fontSize: 20.0, color: Colors.white)),
                 onPressed: (){
                   _selectStartInterval(context);
                   },
+                color: Colors.blueGrey,
               ),
               SizedBox(height: 20),
               new RaisedButton(
                 child: new Text(
-                  'Select End Time: ' + this._endTime.format(context), style: new TextStyle(fontSize: 20.0)),
+                  'Select End Time: ' + this._endTime.format(context), style: new TextStyle(fontSize: 20.0, color: Colors.white)),
                 onPressed: (){_selectEndInterval(context);},
+                color: Colors.blueGrey,
               ),
               SizedBox(height: 20),
               new TextFormField(
@@ -112,9 +115,10 @@ class _Calendar extends State<Calendar>{
               ),
               SizedBox(height: 40),
               new RaisedButton(
-                child: new Text('Submit Ride', style: new TextStyle(fontSize: 20.0)),
+                child: new Text('Submit Ride', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
                 onPressed: (){//_selectDate(context);
                 addToDatabase();},
+                color: Colors.blueGrey,
               ),
             ],
           ),

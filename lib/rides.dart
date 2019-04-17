@@ -33,14 +33,14 @@ class _Rides extends State<Rides> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-        title: new Text("Rides"),
+        title: new Text("Your Rides", textScaleFactor: 1.5,),
         backgroundColor: Colors.grey,
         bottom: new TabBar(
             controller: controller,
             tabs: <Text>[
-                new Text("Past"),
-                new Text("Upcoming"),
-                new Text("Pending"),
+                new Text("Past", textScaleFactor: 1.5,),
+                new Text("Upcoming",  textScaleFactor: 1.5,),
+                new Text("Pending",  textScaleFactor: 1.5,),
             ]
         )
         ),
