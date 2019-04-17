@@ -119,17 +119,19 @@ class _ListPageState extends State<ListPage> {
                   itemBuilder: (_, index) {
                    // if (globals.diff_dates(snapshot.data[index].data["date"])<0)  {
                     return Card(
+                      elevation: 8.0,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Text('\nDate: '+ globals.formatDate(snapshot.data[index].data["date"]) + '\n'),
-                          Text('Driver\'s name: ' + snapshot.data[index].data["driver_name"]),
-                          Text('Start Address: ' + snapshot.data[index].data["start_address"]),
-                          Text('End Address: '+ snapshot.data[index].data["end_address"]),
-                          Text('Start Time: ' + globals.formatTime(snapshot.data[index].data["start_time"])),
-                          Text('End Time: ' + globals.formatTime(snapshot.data[index].data["end_time"])),
+                          Text( '\nDate: '+ globals.formatDate(snapshot.data[index].data["date"]) + '\n',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                          Text('Driver\'s name: ' + snapshot.data[index].data["driver_name"],style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                          Text('Start Address: ' + snapshot.data[index].data["start_address"],style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                          Text('End Address: '+ snapshot.data[index].data["end_address"],style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                          Text('Start Time: ' + globals.formatTime(snapshot.data[index].data["start_time"]),style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                          Text('End Time: ' + globals.formatTime(snapshot.data[index].data["end_time"]),style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                           ButtonTheme.bar( // make buttons use the appropriate styles for cards
-                            child: ButtonBar(
+
+                      child: ButtonBar(
                               children: <Widget>[
                                 FlatButton(
                                   child: const Text('View Ride'),

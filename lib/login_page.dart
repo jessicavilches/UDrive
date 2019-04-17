@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('UDrive', textScaleFactor: 2,),
+        title: Text('Welcome', textScaleFactor: 2,),
         backgroundColor: Colors.blue[900],
       ),
       body: Container(
