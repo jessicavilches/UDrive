@@ -146,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
 
   List<Widget> buildInputs(){
     if(_formType == FormType.login) {
+      child: new LogoPic();
       return [
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Email'),
@@ -219,6 +220,7 @@ class _LoginPageState extends State<LoginPage> {
 
   List <Widget> buildSubmitButtons() {
     if(_formType == FormType.login) {
+
       return [
         new RaisedButton(
           child: new Text('Log in', style: new TextStyle(fontSize: 20.0, color: Colors.white), ),
@@ -327,4 +329,13 @@ class _LoginPageState extends State<LoginPage> {
       moveToLogin();
     }
   }
+}
+class LogoPic extends StatelessWidget
+{
+  @override
+  Widget build(BuildContext context){
+  var assetsImage = new AssetImage('images/UdriveLogo.png');
+  var image = new Image(image: assetsImage,width: 48.0,height: 48.0,);
+  return new Container(child: image);
+}
 }
