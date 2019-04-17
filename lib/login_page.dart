@@ -148,6 +148,7 @@ class _LoginPageState extends State<LoginPage> {
     if(_formType == FormType.login) {
       child: new LogoPic();
       return [
+        new LogoPic(),
         new TextFormField(
           decoration: new InputDecoration(labelText: 'Email'),
           validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
@@ -335,7 +336,7 @@ class LogoPic extends StatelessWidget
   @override
   Widget build(BuildContext context){
   var assetsImage = new AssetImage('images/UdriveLogo.png');
-  var image = new Image(image: assetsImage,width: 48.0,height: 48.0,);
+  var image = new Image(image: assetsImage,width: 250.0,height: 250.0,);
   return new Container(child: image);
 }
 }
