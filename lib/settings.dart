@@ -36,7 +36,28 @@ class _Settings extends State<Settings>{
     return [
       new RaisedButton(
         child: new Text('Save', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-        onPressed: validateAndSubmit,
+        onPressed: () {
+          validateAndSubmit();
+
+          showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Success'),
+                content: const Text('Your changes were successfully recorded'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+
+        },
           color: Colors.blueGrey
       ),
     ];
