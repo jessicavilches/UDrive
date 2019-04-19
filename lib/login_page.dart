@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'globals.dart' as globals;
 import 'services/crud.dart';
 import 'auth.dart';
+import 'profilePic.dart';
+import'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -27,8 +31,19 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   String _mode;
- // String _userID;
   FormType _formType = FormType.login;
+  File image;
+
+  static String filePath = 'images/UdriveLogo.png';
+  File logoPic = new File(filePath);
+
+  picker() async {
+    print('picker is called');
+    var img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState ( (){
+      image = img;
+    });
+  }
 
   crudMethods crudObj = new crudMethods();
 
@@ -207,6 +222,19 @@ class _LoginPageState extends State<LoginPage> {
           //hint: new Text("Select mode"),
 
         ),
+        new Text("\nAdd Profile Picture:"),
+         Column(
+             children: <Widget> [
+               Padding(
+                 padding: EdgeInsets.all(20.0),
+               ),
+               ClipOval(
+                 child: image == null ?new Text(""):Image.file(image),
+               ),
+               new RaisedButton(
+                   onPressed: picker,
+                   child: new Icon(Icons.camera_alt)),
+             ]),
       ];
     } else if (_formType == FormType.forget){
       return [
@@ -244,7 +272,17 @@ class _LoginPageState extends State<LoginPage> {
           child: new Text('Create an Account', style: new TextStyle(fontSize: 20.0)),
           onPressed: () {
             validateAndSubmit().then((_){
+              print("HERE");
+              if(image != null)
+                {final StorageReference firebaseStorageRef =
+                FirebaseStorage.instance.ref().child(globals.get_userID());
+              final StorageUploadTask task = firebaseStorageRef.putFile(image);}
+             // else{
+              //final StorageReference firebaseStorageRef =
+              //FirebaseStorage.instance.ref().child(globals.get_userID());
+              //final StorageUploadTask task = firebaseStorageRef.putFile(logopic);}
               addToDatabase();
+              moveToLogin();
             });
           },
         ),
@@ -336,7 +374,7 @@ class LogoPic extends StatelessWidget
   @override
   Widget build(BuildContext context){
   var assetsImage = new AssetImage('images/UdriveLogo.png');
-  var image = new Image(image: assetsImage,width: 250.0,height: 250.0,);
-  return new Container(child: image);
+  var imageLogo = new Image(image: assetsImage,width: 250.0,height: 250.0,);
+  return new Container(child: imageLogo);
 }
 }

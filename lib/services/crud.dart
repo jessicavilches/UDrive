@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:u_drive/globals.dart' as globals;
+import 'dart:io';
+
 
 class crudMethods {
 
@@ -55,6 +58,12 @@ class crudMethods {
       print(e);
     });
 
+  }
+  addProfPic(File pic)
+  {
+      final StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(globals.get_userID());
+      final StorageUploadTask task = firebaseStorageRef.putFile(pic);
   }
 
   getData() async{

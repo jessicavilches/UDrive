@@ -35,6 +35,11 @@ class _Settings extends State<Settings>{
   List<Widget> buildSubmitButtons() {
     return [
       new RaisedButton(
+          child: new Text('Update/Add Payment', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+          color: Colors.lightBlueAccent
+      ),
+      new Text("\n\n"),
+      new RaisedButton(
         child: new Text('Save', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
         onPressed: validateAndSubmit,
           color: Colors.blueGrey

@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class Feed extends StatefulWidget{
   @override
@@ -33,43 +35,92 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  Future _data;
-  List<DocumentSnapshot> documentList = new List();
+  List<DocumentSnapshot> _data;
+  //List<DocumentSnapshot> documentList = new List();
+  List<Image> profPicslist = new List();
+  List<String> uids = new List();
+  String downloadURL;
 
 
-  Future getPosts() async {
+  Future downloadImage(String uid) async {
+    //print("HERE");
+    final StorageReference firebaseStorageRef = await
+    FirebaseStorage.instance.ref().child(uid);
+    String downloadAddress;
+    downloadAddress = await firebaseStorageRef.getDownloadURL();
+    downloadURL = downloadAddress;
+    print("at this point: ");
+    print(downloadURL);
+    await setState(() {
+      downloadURL = downloadAddress;
+      print("did i set up downloaduRL");
+      print(downloadURL);
+    });
+    // return downloadURL;
+  }
+
+  Future fillPicList() async
+  {
+    await getPosts();
+    for (int i = 0; i < uids.length; i++) //String uid in uids)
+        {
+      print("DOWNLOAD IMAGE");
+      await downloadImage(uids[i]);
+      await profPicslist.insert(i, Image.network(downloadURL));
+    }
+    print("SET STATE");
+    setState(() {});
+  }
+
+  getPosts() async {
     int i = 0;
     var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection('Rides').getDocuments(); // move to crud
+    QuerySnapshot qn = await firestore.collection('Rides')
+        .getDocuments(); // move to crud
 
     await qn.documents.forEach((DocumentSnapshot document) {
       print("did i do this");
       print(globals.diff_dates(document.data["date"]));
-      if (globals.diff_dates(document.data["date"])<=0) {
-        documentList.insert(i, document);
-        i++;
+      if (globals.diff_dates(document.data["date"]) <= 0) {
+        _data.insert(i, document);
         print(globals.diff_dates(document.data["date"]));
+
+        uids.add(document.data["uid"]);
+        /*downloadImage(document.data["uid"]);
+
+
+        //print("DOWNLOAD URL: " + downloadURL); //downloadURL is null
+        if(downloadURL == null){
+          print("ITS NULL");
+          profPicslist.insert(i,null);}
+        else
+          profPicslist.insert(i,Image.network(downloadURL));*/
+
+        i++;
+        //child: downloadURL == null ? Container(): Image.network(downloadURL)
       }
     });
-    return documentList.cast<dynamic>();
     //return qn.documents;
   }
 
-  navigateToDetail(DocumentSnapshot ride){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(ride: ride,)));
+  navigateToDetail(DocumentSnapshot ride) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => DetailPage(ride: ride,)));
   }
 
 
   @override
   initState() {
-
     super.initState();
-    _data = getPosts();
+    _data = new List();
+    fillPicList();
   }
 
-  void launchMap(String startAddress, String endAddress, String midPoint) async{
-    const double lat = 2.813812,  long = 101.503413;
-    const String map_api= "1";
+  void launchMap(String startAddress, String endAddress,
+      String midPoint) async {
+    const double lat = 2.813812,
+        long = 101.503413;
+    const String map_api = "1";
     //const url = "https://maps.google.com/maps/search/?api=$map_api&query=$lat,$long";
     String part1 = 'https://www.google.com/maps/dir/?api=1&origin=';
     String startA = startAddress.replaceAll(' ', '+');
@@ -80,7 +131,7 @@ class _ListPageState extends State<ListPage> {
     String part5 = '&travelmode=driving';
     print(midPoint);
 
-    String url2 = part1+startA+part2+midpoint+part3+endA+part5;
+    String url2 = part1 + startA + part2 + midpoint + part3 + endA + part5;
     //const url3 = url2.;
 
     const url = 'https://www.google.com/maps/dir/?api=1&origin=16350+SW+45th+Terr+Miami+FL+33185&waypoints=6861+SW+44th+St+Miami+FL&destination=1320+S+Dixie+Hwy+Coral+Gables+FL&travelmode=driving';
@@ -88,10 +139,11 @@ class _ListPageState extends State<ListPage> {
 
     if (await canLaunch(url2)) {
       print("Can launch");
-      void initState(){
+      void initState() {
         super.initState();
 
-        canLaunch( "https://maps.google.com/maps/search/?api=$map_api&query=$lat,$long");
+        canLaunch(
+            "https://maps.google.com/maps/search/?api=$map_api&query=$lat,$long");
       }
 
       await launch(url2);
@@ -101,11 +153,22 @@ class _ListPageState extends State<ListPage> {
     }
   }
 
-
+  getProfPic(Image image) {
+    return (
+        Container(
+            width: 150.0,
+            height: 150.0,
+            child: ClipOval(
+              child: image == null ? Container() : image,
+              /*profPicslist[index] == null ? Container(): profPicslist[index],*/
+            )
+        )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    /*return Container(
       child: FutureBuilder(
           future: _data,
           builder: (_,snapshot) {
@@ -113,49 +176,69 @@ class _ListPageState extends State<ListPage> {
               return Center(
                 child: Text('Loading...'),
               );
-            } else {
-              return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (_, index) {
-                   // if (globals.diff_dates(snapshot.data[index].data["date"])<0)  {
-                    return Card(
-                      elevation: 8.0,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text( '\nDate: '+ globals.formatDate(snapshot.data[index].data["date"]) + '\n',style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                          Text('Driver\'s name: ' + snapshot.data[index].data["driver_name"],style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                          Text('Start Address: ' + snapshot.data[index].data["start_address"],style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                          Text('End Address: '+ snapshot.data[index].data["end_address"],style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                          Text('Start Time: ' + globals.formatTime(snapshot.data[index].data["start_time"]),style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                          Text('End Time: ' + globals.formatTime(snapshot.data[index].data["end_time"]),style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                          ButtonTheme.bar( // make buttons use the appropriate styles for cards
+            } else {*/
+    return ListView.builder(
+        itemCount: _data.length,
+        itemBuilder: (context, index) {
+          return Card(
+            elevation: 8.0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                getProfPic(profPicslist[index]),
+                Text(
+                    '\nDate: ' + globals.formatDate(_data[index].data["date"]) +
+                        '\n', style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold)),
+                Text('Driver\'s name: ' + _data[index].data["driver_name"],
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold)),
+                Text('Start Address: ' + _data[index].data["start_address"],
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold)),
+                Text('End Address: ' + _data[index].data["end_address"],
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold)),
+                Text('Start Time: ' +
+                    globals.formatTime(_data[index].data["start_time"]),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold)),
+                Text('End Time: ' +
+                    globals.formatTime(_data[index].data["end_time"]),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold)),
+                ButtonTheme
+                    .bar( // make buttons use the appropriate styles for cards
 
-                      child: ButtonBar(
-                              children: <Widget>[
-                                FlatButton(
-                                  child: const Text('View Ride'),
-                                  onPressed: () {
-                                    launchMap(snapshot.data[index].data["start_address"], snapshot.data[index].data["end_address"], globals.address);
-                                    print("tried doing map");
-                                    },
-                                ),
-                                FlatButton(
-                                  child: const Text('Request Ride'),
-                                  onPressed: () => navigateToDetail(snapshot.data[index]),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
+                  child: ButtonBar(
+                    children: <Widget>[
+                      FlatButton(
+                        child: const Text('View Ride'),
+                        onPressed: () {
+                          launchMap(_data[index].data["start_address"],
+                              _data[index].data["end_address"],
+                              globals.address);
+                          print("tried doing map");
+                        },
                       ),
-                    ); //}
-                  });
-            }
+                      FlatButton(
+                        child: const Text('Request Ride'),
+                        onPressed: () => navigateToDetail(_data[index]),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ); //}
+        });
+  }
+}
+            /*
           }),
     );
   }
-}
+}*/
 
 
 class DetailPage extends StatefulWidget {
