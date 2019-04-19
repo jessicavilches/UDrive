@@ -25,32 +25,6 @@ int diff_dates(String date) {
   return current_date.difference(ride_date).inDays;
 }
 
-void showD(BuildContext context) {
-  _showDialog(context);
-}
-
-void _showDialog(BuildContext context) {
-  // flutter defined function
-  showDialog(
-    builder: (context) {
-      // return object of type Dialog
-      return AlertDialog(
-        title: new Text("Alert Dialog title"),
-        content: new Text("Alert Dialog body"),
-        actions: <Widget>[
-          // usually buttons at the bottom of the dialog
-          new FlatButton(
-            child: new Text("Close"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
 
 String formatDate(date)
 {
