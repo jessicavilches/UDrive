@@ -31,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   String _mode;
+  String _address;
   FormType _formType = FormType.login;
   File image;
 
@@ -208,6 +209,11 @@ class _LoginPageState extends State<LoginPage> {
           validator: (value) => value != _myPassController.text ? 'Retype password' : null,
           onSaved: (value) => _password = value,
         ),
+        new TextFormField(
+          decoration: new InputDecoration(labelText: 'Street, City, State, Zip Code'),
+          validator: (value) => value != _myPassController.text ? 'Address' : null,
+          onSaved: (value) => _address = value,
+        ),
         new DropdownButton<String>(
           value: globals.currentItemSelected,
           items: globals.UserModes.map((String dropDownStringItem) {
@@ -360,6 +366,7 @@ class _LoginPageState extends State<LoginPage> {
         'fname': this._fname,
         'lname': this._lname,
         'mode': this._mode,
+        'address': this._address,
         'uid' : globals.get_userID()
       };
       crudObj.addData(userData).catchError((e) {

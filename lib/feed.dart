@@ -43,11 +43,14 @@ class _ListPageState extends State<ListPage> {
 
 
   Future downloadImage(String uid) async {
-    //print("HERE");
+    print("HERE1");
     final StorageReference firebaseStorageRef = await
     FirebaseStorage.instance.ref().child(uid);
+    print("HERE2");
     String downloadAddress;
+    print("HERE3");
     downloadAddress = await firebaseStorageRef.getDownloadURL();
+    print("HERE4");
     downloadURL = downloadAddress;
     print("at this point: ");
     print(downloadURL);

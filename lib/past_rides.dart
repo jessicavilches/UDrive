@@ -155,17 +155,13 @@ class _DetailPageState extends State<DetailPage>{
         child: Card(
           elevation: 8.0,
           child: ListView(
-              //mainAxisSize: MainAxisSize.min,
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              //mainAxisAlignment: MainAxisAlignment.center,
               padding: EdgeInsets.all(25.0),
               children: <Widget>[
-
-                Text('\nDate: '+ globals.formatDate(widget.ride.data["date"]) + '\n'),
-                Text('Start Address: ' + widget.ride.data["start_address"]),
-                Text('End Address: '+ widget.ride.data["end_address"]),
-                Text('Start Time: ' + globals.formatTime(widget.ride.data["start_time"])),
-                Text('End Time: ' + globals.formatTime(widget.ride.data["end_time"])),
+                Text('\nDate: '+ globals.formatDate(widget.ride.data["date"]) + '\n', style: TextStyle(fontSize: 20.0),),
+                Text('Start Address: ' + widget.ride.data["start_address"], style: TextStyle(fontSize: 20.0)),
+                Text('End Address: '+ widget.ride.data["end_address"], style: TextStyle(fontSize: 20.0)),
+                Text('Start Time: ' + globals.formatTime(widget.ride.data["start_time"]), style: TextStyle(fontSize: 20.0)),
+                Text('End Time: ' + globals.formatTime(widget.ride.data["end_time"]), style: TextStyle(fontSize: 20.0)),
               ]
           ),
         ),
