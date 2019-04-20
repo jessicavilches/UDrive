@@ -123,6 +123,7 @@ class _ListPageState extends State<ListPage> {
                     print("this is the index");
                     print(index);
                     return Card(
+                      elevation: 8.0,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[

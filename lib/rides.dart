@@ -35,10 +35,11 @@ class _Rides extends State<Rides> with SingleTickerProviderStateMixin {
         appBar: new TabBar(
           controller: controller,
             labelColor: Colors.blueGrey,
+            labelPadding: EdgeInsets.all(10.0),
             tabs: <Text>[
-              new Text("Past", textScaleFactor: 1.75,),
+              new Text("Past", textScaleFactor: 1.5,),
               new Text("Upcoming",  textScaleFactor: 1.5,),
-              new Text("Pending",  textScaleFactor: 1.75,),
+              new Text("Pending",  textScaleFactor: 1.5,),
             ]
         )
         /*new AppBar(

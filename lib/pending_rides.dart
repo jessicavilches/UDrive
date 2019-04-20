@@ -85,20 +85,21 @@ class _ListPageState extends State<ListPage> {
                     print("this is the index");
                     print(index);
                     return Card(
+                      elevation: 8.0,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
                               '\nDate: ' + globals.formatDate(snapshot.data[index].data["date"]) +
-                                  '\n'),
+                                  '\n', style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
                           Text('Start Address: ' +
-                              snapshot.data[index].data["start_address"]),
+                              snapshot.data[index].data["start_address"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
                           Text('End Address: ' +
-                              snapshot.data[index].data["end_address"]),
+                              snapshot.data[index].data["end_address"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
                           Text('Start Time: ' +
-                              globals.formatTime(snapshot.data[index].data["start_time"])),
+                              globals.formatTime(snapshot.data[index].data["start_time"]), style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
                           Text('End Time: ' +
-                              globals.formatTime(snapshot.data[index].data["end_time"])),
+                              globals.formatTime(snapshot.data[index].data["end_time"]), style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
                           ButtonTheme
                               .bar( // make buttons use the appropriate styles for cards
                             child: ButtonBar(
