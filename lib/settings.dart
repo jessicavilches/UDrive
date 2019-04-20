@@ -153,11 +153,11 @@ class _Settings extends State<Settings>{
     if (form.validate()) {
       form.save();
     print('this is the fname:');
-    print(globals.fname);
+    //print(_fname);
     print('this is the lname:');
-    print(globals.lname);
+    //print(_lname);
     print('this is the address:');
-    print(globals.address);
+    //print(_address);
     await addToDatabase();
     }
     else {
@@ -201,7 +201,7 @@ class _Settings extends State<Settings>{
 
   void addToDatabase() async {
     print('at this point this is fname:');
-    print(this._fname);
+    //print(this._fname);
     Map<String, dynamic> userData = {
     'fname': this._fname,
     'lname': this._lname,
