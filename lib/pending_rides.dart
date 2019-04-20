@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'globals.dart' as globals;
 import 'services/crud.dart';
 import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 
 class PendingRides extends StatefulWidget{
   @override
@@ -142,6 +143,42 @@ class _DetailPageState extends State<DetailPage>{
     return false;
   }
 
+  void launchMap(String startAddress, String endAddress, String midPoint) async{
+    print(midPoint);
+    const double lat = 2.813812,  long = 101.503413;
+    const String map_api= "1";
+    //const url = "https://maps.google.com/maps/search/?api=$map_api&query=$lat,$long";
+    String part1 = 'https://www.google.com/maps/dir/?api=1&origin=';
+    String startA = startAddress.replaceAll(' ', '+');
+    String part2 = '&waypoints=';
+    String midpoint = midPoint.replaceAll(' ', '+');
+    String part3 = '&destination=';
+    String endA = endAddress.replaceAll(' ', '+');
+    String part5 = '&travelmode=driving';
+    String part6 = '&dir_action=navigate';
+    print(midPoint);
+
+    String url2 = part1+startA+part2+midpoint+part3+endA+part5+part6;
+    //const url3 = url2.;
+
+    const url = 'https://www.google.com/maps/dir/?api=1&origin=16350+SW+45th+Terr+Miami+FL+33185&waypoints=6861+SW+44th+St+Miami+FL&destination=1320+S+Dixie+Hwy+Coral+Gables+FL&travelmode=driving';
+    //const url = 'https://www.google.com/maps/dir/?api=1&origin=Space+Needle+Seattle+WA&destination=Pike+Place+Market+Seattle+WA&travelmode=bicycling';
+
+    if (await canLaunch(url2)) {
+      print("Can launch");
+      void initState(){
+        super.initState();
+
+        canLaunch( "https://maps.google.com/maps/search/?api=$map_api&query=$lat,$long");
+      }
+
+      await launch(url2);
+    } else {
+      print("Could not launch");
+      throw 'Could not launch Maps';
+    }
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold (
@@ -162,6 +199,12 @@ class _DetailPageState extends State<DetailPage>{
                 ButtonTheme.bar(
                   child: ButtonBar(
                     children: <Widget>[
+                      FlatButton(
+                        child: const Text('View Route'),
+                  onPressed: () =>
+                      launchMap(widget.ride.data["start_address"], widget.ride.data["end_address"], widget.ride.data["mid_address"]),
+                  //navigateToDetail(snapshot.data[index]),
+                      ),
                       FlatButton(
                         child: const Text('Accept'),
                         onPressed: () => updateDatabase("Accepted", widget.ride.documentID),

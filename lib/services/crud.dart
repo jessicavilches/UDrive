@@ -29,9 +29,9 @@ class crudMethods {
     DocumentSnapshot document = await Firestore.instance.collection("Users").document(uId).get();
     globals.address = document.data['address'];
   }
-  Future<void> getMode(String uId) async {
+  Future<void> getEmail(String uId) async {
     DocumentSnapshot document = await Firestore.instance.collection("Users").document(uId).get();
-    globals.mode = document.data['mode'];
+    globals.email = document.data['email'];
   }
 
   Future<void> addData(userData) async {

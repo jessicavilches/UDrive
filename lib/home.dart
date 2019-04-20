@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage>{
     await globals.getFname();
     await globals.getLname();
     await globals.getAddress();
-    await globals.getMode();
+    await globals.getEmail();
     print("Address: ");
     print(globals.address);
 
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage>{
     await globals.getFname();
     await globals.getLname();
     await globals.getAddress();
-    await globals.getMode();
+    await globals.getEmail();
 
     setState(() {
       currentPage = settings;

@@ -51,7 +51,7 @@ class _ListPageState extends State<ListPage> {
     print("HERE3");
     downloadAddress = await firebaseStorageRef.getDownloadURL();
     print("HERE4");
-    downloadURL = downloadAddress;
+    downloadURL = await downloadAddress;
     print("at this point: ");
     print(downloadURL);
     await setState(() {
@@ -69,24 +69,36 @@ class _ListPageState extends State<ListPage> {
         {
       print("DOWNLOAD IMAGE");
       await downloadImage(uids[i]);
-      await profPicslist.insert(i, Image.network(downloadURL));
+      await profPicslist.insert(i, await Image.network(downloadURL));
+
+
     }
     print("SET STATE");
     setState(() {});
+    /*await setState(() {
+      getPosts();
+      for (int i = 0; i < uids.length; i++) //String uid in uids)
+          {
+        print("DOWNLOAD IMAGE");
+        downloadImage(uids[i]);
+        profPicslist.insert(i, Image.network(downloadURL));
+      }
+      print("SET STATE");
+    });*/
   }
 
-  getPosts() async {
+  Future <void> getPosts() async {
     int i = 0;
-    var firestore = Firestore.instance;
+    var firestore = await Firestore.instance;
     QuerySnapshot qn = await firestore.collection('Rides')
         .getDocuments(); // move to crud
 
     await qn.documents.forEach((DocumentSnapshot document) {
       print("did i do this");
-      print(globals.diff_dates(document.data["date"]));
+      //print(globals.diff_dates(document.data["date"]));
       if (globals.diff_dates(document.data["date"]) <= 0) {
         _data.insert(i, document);
-        print(globals.diff_dates(document.data["date"]));
+        //print(globals.diff_dates(document.data["date"]));
 
         uids.add(document.data["uid"]);
         /*downloadImage(document.data["uid"]);
@@ -114,9 +126,15 @@ class _ListPageState extends State<ListPage> {
 
   @override
   initState() {
+    print("this happens first");
     super.initState();
     _data = new List();
-    fillPicList();
+    Future.wait([fillPicList()]);
+    //fillPicList();
+  }
+
+  void printFuture() {
+    print("future finished");
   }
 
   void launchMap(String startAddress, String endAddress,
@@ -171,6 +189,13 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
+    if(profPicslist.length != uids.length)
+      {
+      return(Center(
+        child: Text("Loading"),
+      )
+      );
+          }
     /*return Container(
       child: FutureBuilder(
           future: _data,
@@ -180,6 +205,7 @@ class _ListPageState extends State<ListPage> {
                 child: Text('Loading...'),
               );
             } else {*/
+
     return ListView.builder(
         itemCount: _data.length,
         itemBuilder: (context, index) {
@@ -415,6 +441,8 @@ class _DetailPageState extends State<DetailPage> {
       'arrival_time': this.arrivalTime.toString(),
       'bid_amount': this.amountToPay.toString(),
       'status': "Pending",
+      'driver_email': widget.ride.data["driver_email"],
+      "rider_email": globals.email,
     };
     crudObj.addRideCatalog(rideCatalog, hash_Code()).catchError((e) {
       print(e);

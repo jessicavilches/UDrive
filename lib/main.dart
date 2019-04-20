@@ -3,6 +3,7 @@ import 'login_page.dart';
 import 'auth.dart';
 import 'home.dart';
 import 'root_page.dart';
+import 'paymentexample.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: HomePage(),
       home: new LoginPage(auth: new Auth()),
+      //home: new MyApp(),
       routes: <String, WidgetBuilder> {
         '/homepage': (BuildContext context) => new HomePage(),
         '/login': (BuildContext context) => new LoginPage(auth: new Auth()),

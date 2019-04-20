@@ -3,6 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'globals.dart' as globals;
 import 'services/crud.dart';
 import 'dart:async';
+import 'package:stripe_payment/stripe_payment.dart';
+import'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+
+
+
 
 class Settings extends StatefulWidget{
   @override
@@ -10,15 +17,68 @@ class Settings extends StatefulWidget{
 }
 
 class _Settings extends State<Settings>{
+
   final formKey = new GlobalKey<FormState>();
   String _fname;
   String _lname;
   String _mode;
   String _address;
-
+  File image;
+  Image image2;
+  String downloadURL;
   crudMethods crudObj = new crudMethods();
 
+  Future downloadImage(String uid) async {
+    print("HERE1");
+    final StorageReference firebaseStorageRef = await
+    FirebaseStorage.instance.ref().child(uid);
+    print("HERE2");
+    String downloadAddress;
+    print("HERE3");
+    downloadAddress = await firebaseStorageRef.getDownloadURL();
+    print("HERE4");
+    downloadURL = await downloadAddress;
+    print("at this point: ");
+    print(downloadURL);
+    await setState(() {
+      downloadURL = downloadAddress;
+      print("did i set up downloaduRL");
+      print(downloadURL);
+    });
+    // return downloadURL;
+  }
+  Future<void> grabImage() async
+  {
+    await downloadImage(globals.get_userID());
+  }
+
+  initState() {
+    super.initState();
+    //downloadImage(globals.get_userID());
+    grabImage();
+    //image2 =  Image.network(downloadURL);
+
+  }
+  picker() async {
+    print('picker is called');
+    var img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState ( (){
+      image = img;
+      image2 = Image.file(img);
+    });
+  }
+
   Widget build(BuildContext context) {
+    print("building");
+    print(downloadURL);
+    if(downloadURL == null)
+      {
+        print("null");
+        return(
+        Center(
+          child: Text("Loading"),)
+        );
+      }
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(16.0),
@@ -31,13 +91,33 @@ class _Settings extends State<Settings>{
       )
     );
   }
-
+  void _addSource(String token) {
+    print("Token => $token");
+  }
   List<Widget> buildSubmitButtons() {
     return [
       new RaisedButton(
           child: new Text('Update/Add Payment', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-          color: Colors.lightBlueAccent
+          color: Colors.lightBlueAccent,
+        onPressed: () {
+          StripeSource.addSource().then((String token) {
+            _addSource(token);
+          });
+        }
       ),
+      new Text("\nAdd Profile Picture:"),
+      Column(
+          children: <Widget> [
+            Padding(
+              padding: EdgeInsets.all(20.0),
+            ),
+            ClipOval(
+              child: Image.network(downloadURL) == null ? Container(): Image.network(downloadURL),//Image.file(image),
+            ),
+            new RaisedButton(
+                onPressed: picker,
+                child: new Icon(Icons.camera_alt)),
+          ]),
       new Text("\n\n"),
       new RaisedButton(
         child: new Text('Save', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
@@ -101,12 +181,12 @@ class _Settings extends State<Settings>{
         validator: (value) => value.isEmpty ? 'Last name can\'t be empty' : null,
         onSaved: (value) => _lname = value,
       ),
-      new TextFormField(
+      /*new TextFormField(
         initialValue: globals.mode,
         decoration: new InputDecoration(labelText: 'Mode'),
         validator: (value) => value.isEmpty ? 'Mode can\'t be empty' : null,
         onSaved: (value) => _mode = value,
-      ),
+      ),*/
       new TextFormField(
         initialValue: globals.address,
         decoration: new InputDecoration(labelText: 'Address'),
@@ -125,9 +205,9 @@ class _Settings extends State<Settings>{
     Map<String, dynamic> userData = {
     'fname': this._fname,
     'lname': this._lname,
-    'mode': this._mode,
     'address' : this._address,
-    'uid' : globals.get_userID()
+    'uid' : globals.get_userID(),
+      'email': globals.email,
     };
     crudObj.addData(userData).catchError((e) {
       print(e);

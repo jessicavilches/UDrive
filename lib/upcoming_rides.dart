@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class UpcomingRides extends StatefulWidget{
   @override
@@ -148,6 +149,16 @@ class _ListPageState extends State<ListPage> {
                               .bar( // make buttons use the appropriate styles for cards
                             child: ButtonBar(
                               children: <Widget>[
+                                FlatButton(
+                                  child: const Text('Contact'),
+                                  onPressed: () {
+                                    if (snapshot.data[index].data["driver_email"] == globals.email)
+                                    FlutterEmailSender.send(globals.sendEmail(snapshot.data[index].data["rider_email"]));
+                                    else
+                                      FlutterEmailSender.send(globals.sendEmail(snapshot.data[index].data["driver_email"]));
+                                  }
+
+                                ),
                                 FlatButton(
                                   child: const Text('Navigate'),
                                   onPressed: () =>

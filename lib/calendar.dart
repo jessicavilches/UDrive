@@ -113,7 +113,10 @@ class _Calendar extends State<Calendar>{
               validator: (value) => value.isEmpty ? 'Start Address can\'t be empty' : null,
               onSaved: (value) => _endAddress = value,
               ),
-              SizedBox(height: 40),
+              //SizedBox(height: 40),
+            new Text('\nFormat: Street Address City State Abbreviation ZipCode'),
+            new Text('Example: 1320 S Dixie Hwy Coral Gables FL 33146 \n \n '),
+            SizedBox(height: 20),
               new RaisedButton(
                 child: new Text('Submit Ride', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
                 onPressed: (){//_selectDate(context);
@@ -157,7 +160,8 @@ class _Calendar extends State<Calendar>{
             'start_address': this._startAddress,
             'end_address': this._endAddress,
             'driver_name': globals.fname,
-            'uid' : globals.get_userID()
+            'uid' : globals.get_userID(),
+            'driver_email': globals.email,
           };
           crudObj.addRide(rideData).catchError((e) {
             print(e);

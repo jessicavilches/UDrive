@@ -1,20 +1,36 @@
 library UDriveTest.globals;
 import 'services/crud.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_email_sender/flutter_email_sender.dart'
+;
 bool registeredSuccessfully;
 bool loggedSuccessfully;
 String _userID = '';
 String fname = "";
 String lname = "";
-String mode = "";
+String email = "";
 String address = "";
 
 crudMethods crudObj = new crudMethods();
 
+Email sendEmail(String r1) {
+  List<String> r = [r1];
+  Email email = Email(
+    body: 'Looks like we got something in common, want to chat?',
+    subject: 'Hey Buddy, its $fname',
+    recipients: r,
+    cc: null,
+    bcc: null,
+    attachmentPath: null,
+  );
+  return email;
+}
+
+
+
 DateTime convertDateFromString(String strDate){
   DateTime todayDate = DateTime.parse(strDate);
-  print(todayDate);
+  //print(todayDate);
   return todayDate;
   //print(formatDate(todayDate, [yyyy, '/', mm, '/', dd, ' ', hh, ':', nn, ':', ss, ' ', am]));
 }
@@ -67,8 +83,8 @@ void getLname() async {
 void getAddress() async {
   await crudObj.getAddress(get_userID());
 }
-void getMode() async {
-  await crudObj.getMode(get_userID());
+void getEmail() async {
+  await crudObj.getEmail(get_userID());
 }
 
 var UserModes = ['Rider', 'Driver', 'Driver/Rider'];

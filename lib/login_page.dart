@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
   String _mode;
-  String _address;
   FormType _formType = FormType.login;
   File image;
 
@@ -68,8 +67,8 @@ class _LoginPageState extends State<LoginPage> {
   void getAddress() async {
     await crudObj.getAddress(globals.get_userID());
   }
-  void getMode() async {
-    await crudObj.getMode(globals.get_userID());
+  void getEmail() async {
+    await crudObj.getEmail(globals.get_userID());
   }
 
 
@@ -88,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
             await getFname();
             await getLname();
             await getAddress();
-            await getMode();
+            await getEmail();
 
             //widget.onSignedIn();
             Navigator.of(context).pushReplacementNamed('/homepage');
@@ -209,12 +208,7 @@ class _LoginPageState extends State<LoginPage> {
           validator: (value) => value != _myPassController.text ? 'Retype password' : null,
           onSaved: (value) => _password = value,
         ),
-        new TextFormField(
-          decoration: new InputDecoration(labelText: 'Street, City, State, Zip Code'),
-          validator: (value) => value != _myPassController.text ? 'Address' : null,
-          onSaved: (value) => _address = value,
-        ),
-        new DropdownButton<String>(
+        /*new DropdownButton<String>(
           value: globals.currentItemSelected,
           items: globals.UserModes.map((String dropDownStringItem) {
             return new DropdownMenuItem<String>(
@@ -227,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
           },
           //hint: new Text("Select mode"),
 
-        ),
+        ) , */
         new Text("\nAdd Profile Picture:"),
          Column(
              children: <Widget> [
@@ -288,6 +282,7 @@ class _LoginPageState extends State<LoginPage> {
               //FirebaseStorage.instance.ref().child(globals.get_userID());
               //final StorageUploadTask task = firebaseStorageRef.putFile(logopic);}
               addToDatabase();
+              print("tried to save in database");
               moveToLogin();
             });
           },
@@ -365,8 +360,6 @@ class _LoginPageState extends State<LoginPage> {
         'email': this._email,
         'fname': this._fname,
         'lname': this._lname,
-        'mode': this._mode,
-        'address': this._address,
         'uid' : globals.get_userID()
       };
       crudObj.addData(userData).catchError((e) {
