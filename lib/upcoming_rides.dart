@@ -133,7 +133,7 @@ class _ListPageState extends State<ListPage> {
                               snapshot.data[index].data["driver_name"]),
                           Text('Rider\'s Name: ' +
                               snapshot.data[index].data["rider_name"]),
-                          Text('Ride Amount: ' +
+                          Text('Ride Amount: \$' +
                               snapshot.data[index].data["bid_amount"]),
                           Text('Start Address: ' +
                               snapshot.data[index].data["start_address"]),
@@ -191,6 +191,7 @@ class _DetailPageState extends State<DetailPage>{
     return Scaffold (
       appBar: AppBar(
         title: Text(globals.formatDate(widget.ride.data["date"])),
+        backgroundColor: Colors.blue[900],
       ),
       body: Container(
         child: Card(

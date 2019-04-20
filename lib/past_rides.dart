@@ -146,6 +146,7 @@ class _DetailPageState extends State<DetailPage>{
     return Scaffold (
       appBar: AppBar(
         title: Text(globals.formatDate(widget.ride.data["date"])),
+        backgroundColor: Colors.blue[900],
       ),
       body: Container(
         child: Card(

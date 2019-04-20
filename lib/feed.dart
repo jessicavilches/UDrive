@@ -320,6 +320,7 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.ride.data["driver_name"]+'\'s ride'),
+        backgroundColor: Colors.blue[900],
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
@@ -328,13 +329,13 @@ class _DetailPageState extends State<DetailPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text('\nDate: ' + globals.formatDate(widget.ride.data["date"]) +
-                    '\n'),
-                Text('Start Address: ' + widget.ride.data["start_address"]),
-                Text('End Address: ' + widget.ride.data["end_address"]),
+                    '\n', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                Text('Start Address: ' + widget.ride.data["start_address"], style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                Text('End Address: ' + widget.ride.data["end_address"], style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 Text('Start Time: ' +
-                    globals.formatTime(widget.ride.data["start_time"])),
+                    globals.formatTime(widget.ride.data["start_time"]), style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 Text('End Time: ' +
-                    globals.formatTime(widget.ride.data["end_time"])),
+                    globals.formatTime(widget.ride.data["end_time"]), style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 new Form(
                   key: formKey,
                   child: new TextFormField(
@@ -346,8 +347,8 @@ class _DetailPageState extends State<DetailPage> {
           ),
           SizedBox(height: 50),
           RaisedButton(
-            color: Colors.amber,
-            child: new Text('Select Arrival Time: ' + this.arrivalTime.format(context), style: new TextStyle(fontSize: 20.0)),
+            color: Colors.blueGrey,
+            child: new Text('Select Arrival Time: ' + this.arrivalTime.format(context), style: new TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: (){
               _selectTime(context);
             },
@@ -363,8 +364,27 @@ class _DetailPageState extends State<DetailPage> {
                         {
                           final form = formKey.currentState;
                           form.save();
-                        addToDatabase();
+                          addToDatabase();
+
+                          showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Success'),
+                                content: const Text('Your request was successfully submitted'),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    child: Text('Ok'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
+
                       ),
                     ],
                   ),

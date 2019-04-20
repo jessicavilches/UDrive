@@ -117,7 +117,27 @@ class _Calendar extends State<Calendar>{
               new RaisedButton(
                 child: new Text('Submit Ride', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
                 onPressed: (){//_selectDate(context);
-                addToDatabase();},
+                addToDatabase();
+
+                showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Success'),
+                      content: const Text('Your ride was successfully submitted'),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+                },
                 color: Colors.blueGrey,
               ),
             ],
@@ -143,6 +163,8 @@ class _Calendar extends State<Calendar>{
             print(e);
           });
         }
+        //globals.
+        //globals.showD(context);
        // moveToLogin(); This should clear all values and let you submit a new ride
       //}
     }
