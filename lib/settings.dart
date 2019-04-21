@@ -25,6 +25,7 @@ class _Settings extends State<Settings>{
   String _address;
   File image;
   Image image2;
+  var img;
   String downloadURL;
   crudMethods crudObj = new crudMethods();
 
@@ -61,10 +62,10 @@ class _Settings extends State<Settings>{
   }
   picker() async {
     print('picker is called');
-    var img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    img = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState ( (){
       image = img;
-      image2 = Image.file(img);
+      //image2 = Image.file(img);
     });
   }
 
@@ -112,7 +113,7 @@ class _Settings extends State<Settings>{
               padding: EdgeInsets.all(20.0),
             ),
             ClipOval(
-              child: Image.network(downloadURL) == null ? Container(): Image.network(downloadURL),//Image.file(image),
+              child: image == null ? Image.network(downloadURL): Image.file(image),//Image.file(image),
             ),
             new RaisedButton(
                 onPressed: picker,
@@ -122,14 +123,23 @@ class _Settings extends State<Settings>{
       new RaisedButton(
         child: new Text('Save', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
         onPressed: () {
-          validateAndSubmit();
+          if(image != null)
+          {
+            print("SAVED IMAGE");
+            final StorageReference firebaseStorageRef =
+            FirebaseStorage.instance.ref().child(globals.get_userID());
+            final StorageUploadTask task = firebaseStorageRef.putFile(image);}
+            validateAndSubmit();
+
+          image = img;
+
 
           showDialog<void>(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text('Success'),
-                content: const Text('Your changes were successfully recorded'),
+                content: const Text('Your changes were successfully recorded, if you updated you profile picture, please allow 5 minutes for changes to take effect'),
                 actions: <Widget>[
                   FlatButton(
                     child: Text('Ok'),
