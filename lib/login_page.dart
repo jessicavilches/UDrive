@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   String _lname;
   String _email;
   String _password;
-  String _mode;
+  String _address;
   FormType _formType = FormType.login;
   File image;
 
@@ -178,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
       ];
     } else if (_formType == FormType.register){
       final _myPassController = TextEditingController();
-      this._mode = globals.currentItemSelected;
+      //this._mode = globals.currentItemSelected;
       return [
         new TextFormField(
           decoration: new InputDecoration(labelText: 'First Name'),
@@ -195,6 +195,13 @@ class _LoginPageState extends State<LoginPage> {
           validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
           onSaved: (value) => _email = value,
         ),
+        new TextFormField(
+          decoration: new InputDecoration(labelText: 'Address'),
+          validator: (value) => value.isEmpty ? 'Address can\'t be empty' : null,
+          onSaved: (value) => _address = value,
+        ),
+        new Text('\nFormat: Street Address City State Abbreviation ZipCode'),
+        new Text('Example: 1320 S Dixie Hwy Coral Gables FL 33146'),
         new TextFormField(
           controller: _myPassController,
           decoration: new InputDecoration(labelText: 'Password'),
@@ -341,12 +348,12 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _onDropDownItemSelected(String newValueSelected){
+  /*void _onDropDownItemSelected(String newValueSelected){
     setState(() {
       globals.currentItemSelected = newValueSelected;
       this._mode = newValueSelected;
     });
-  }
+  }*/
 
   void _onRegistration(bool registration){
     setState(() {
@@ -360,7 +367,8 @@ class _LoginPageState extends State<LoginPage> {
         'email': this._email,
         'fname': this._fname,
         'lname': this._lname,
-        'uid' : globals.get_userID()
+        'uid' : globals.get_userID(),
+        'address': this._address,
       };
       crudObj.addData(userData).catchError((e) {
         print(e);
