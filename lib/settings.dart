@@ -112,9 +112,12 @@ class _Settings extends State<Settings>{
             Padding(
               padding: EdgeInsets.all(20.0),
             ),
-            ClipOval(
-              child: image == null ? Image.network(downloadURL): Image.file(image),//Image.file(image),
-            ),
+            Container(
+              width: 100,
+                height: 100,
+                child: ClipOval(
+              child: image == null ? Image.network(downloadURL): Image.file(image), //Image.file(image),
+            )),
             new RaisedButton(
                 onPressed: picker,
                 child: new Icon(Icons.camera_alt)),
@@ -163,7 +166,7 @@ class _Settings extends State<Settings>{
   Future<void> validateAndSubmit() async {
     final form = formKey.currentState;
     if (form.validate()) {
-      form.save();
+      await form.save();
     print('this is the fname:');
     print(_fname);
     print('this is the lname:');
@@ -191,13 +194,14 @@ class _Settings extends State<Settings>{
         initialValue: globals.fname,
         decoration: new InputDecoration(labelText: 'First Name'),
         validator: (value) => value.isEmpty ? 'First name can\'t be empty' : null,
-        onSaved: (value) => _fname = value,
+        onSaved: (value) { _fname = value; globals.fname= value; },
       ),
       new TextFormField(
         initialValue: globals.lname,
         decoration: new InputDecoration(labelText: 'Last Name'),
         validator: (value) => value.isEmpty ? 'Last name can\'t be empty' : null,
-        onSaved: (value) => _lname = value,
+        //onSaved: (value) => _lname = value,
+        onSaved: (value) { _lname = value; globals.lname= value; },
       ),
       /*new TextFormField(
         initialValue: globals.mode,
@@ -209,7 +213,8 @@ class _Settings extends State<Settings>{
         initialValue: globals.address,
         decoration: new InputDecoration(labelText: 'Address'),
         validator: (value) => value.isEmpty ? 'Address can\'t be empty' : null,
-        onSaved: (value) => _address = value,
+        //onSaved: (value) => _address = value,
+        onSaved: (value) { _address = value; globals.address= value; },
       ),
       new Text('\nFormat: Street Address City State Abbreviation ZipCode'),
       new Text('Example: 1320 S Dixie Hwy Coral Gables FL 33146 \n \n '),
@@ -224,6 +229,9 @@ class _Settings extends State<Settings>{
     'fname': this._fname,
     'lname': this._lname,
     'address' : this._address,
+      //'fname2': globals.fname,
+      //'lname2': globals.lname,
+      //'address2' : globals.address,
     'uid' : globals.get_userID(),
       'email': globals.email,
     };
