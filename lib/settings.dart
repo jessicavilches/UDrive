@@ -110,7 +110,7 @@ class _Settings extends State<Settings>{
       Column(
           children: <Widget> [
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(10.0),
             ),
             Container(
               width: 100,
@@ -122,7 +122,7 @@ class _Settings extends State<Settings>{
                 onPressed: picker,
                 child: new Icon(Icons.camera_alt)),
           ]),
-      new Text("\n\n"),
+      //new Text(""),
       new RaisedButton(
         child: new Text('Save', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
         onPressed: () {
@@ -217,7 +217,7 @@ class _Settings extends State<Settings>{
         onSaved: (value) { _address = value; globals.address= value; },
       ),
       new Text('\nFormat: Street Address City State Abbreviation ZipCode'),
-      new Text('Example: 1320 S Dixie Hwy Coral Gables FL 33146 \n \n '),
+      new Text('Example: 1320 S Dixie Hwy Coral Gables FL 33146 \n '),
     ];
   }
 

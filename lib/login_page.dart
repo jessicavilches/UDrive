@@ -233,11 +233,14 @@ class _LoginPageState extends State<LoginPage> {
          Column(
              children: <Widget> [
                Padding(
-                 padding: EdgeInsets.all(20.0),
+                 padding: EdgeInsets.all(10.0),
                ),
-               ClipOval(
+    Container(
+      width: 100,
+    height: 100,
+    child: ClipOval(
                  child: image == null ?new Text(""):Image.file(image),
-               ),
+               )),
                new RaisedButton(
                    onPressed: picker,
                    child: new Icon(Icons.camera_alt)),
