@@ -123,14 +123,16 @@ class _Settings extends State<Settings>{
       new RaisedButton(
         child: new Text('Save', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
         onPressed: () {
-          if(image != null)
+          validateAndSubmit().then((_){ addToDatabase();
+          });
+
+         /* if(image != null)
           {
             print("SAVED IMAGE");
             final StorageReference firebaseStorageRef =
             FirebaseStorage.instance.ref().child(globals.get_userID());
             final StorageUploadTask task = firebaseStorageRef.putFile(image);}
-            validateAndSubmit();
-
+*/
           image = img;
 
 
@@ -163,12 +165,18 @@ class _Settings extends State<Settings>{
     if (form.validate()) {
       form.save();
     print('this is the fname:');
-    //print(_fname);
+    print(_fname);
     print('this is the lname:');
     //print(_lname);
     print('this is the address:');
     //print(_address);
-    await addToDatabase();
+    //////await addToDatabase();
+     /* if(image != null)
+      {
+        print("SAVED IMAGE");
+        final StorageReference firebaseStorageRef =
+        await FirebaseStorage.instance.ref().child(globals.get_userID());
+        final StorageUploadTask task = await firebaseStorageRef.putFile(image);} */
     }
     else {
       print("form couldn't be validated");
@@ -219,9 +227,17 @@ class _Settings extends State<Settings>{
     'uid' : globals.get_userID(),
       'email': globals.email,
     };
-    crudObj.addData(userData).catchError((e) {
+    await crudObj.addData(userData).catchError((e) {
       print(e);
     });
+
+    if(image != null)
+    {
+      print("SAVED IMAGE");
+      final StorageReference firebaseStorageRef =
+      await FirebaseStorage.instance.ref().child(globals.get_userID());
+      final StorageUploadTask task = await firebaseStorageRef.putFile(image);}
+
   }
 
 }
