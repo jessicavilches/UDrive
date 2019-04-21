@@ -92,15 +92,21 @@ class _ListPageState extends State<ListPage> {
                         children: <Widget>[
                           Text(
                               '\nDate: ' + globals.formatDate(snapshot.data[index].data["date"]) +
-                                  '\n', style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
+                                  '\n', style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
+                          Text('Driver\'s Name: ' +
+                              snapshot.data[index].data["driver_name"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
+                          Text('Rider\'s Name: ' +
+                              snapshot.data[index].data["rider_name"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
+                          Text('Ride Amount: \$' +
+                              snapshot.data[index].data["bid_amount"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('Start Address: ' +
-                              snapshot.data[index].data["start_address"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
+                              snapshot.data[index].data["start_address"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('End Address: ' +
-                              snapshot.data[index].data["end_address"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
+                              snapshot.data[index].data["end_address"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('Start Time: ' +
-                              globals.formatTime(snapshot.data[index].data["start_time"]), style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
+                              globals.formatTime(snapshot.data[index].data["start_time"]), style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('End Time: ' +
-                              globals.formatTime(snapshot.data[index].data["end_time"]), style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5)),
+                              globals.formatTime(snapshot.data[index].data["end_time"]), style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           ButtonTheme
                               .bar( // make buttons use the appropriate styles for cards
                             child: ButtonBar(
@@ -191,11 +197,14 @@ class _DetailPageState extends State<DetailPage>{
           child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('\nDate: '+ globals.formatDate(widget.ride.data["date"]) + '\n'),
-                Text('Start Address: ' + widget.ride.data["start_address"]),
-                Text('End Address: '+ widget.ride.data["end_address"]),
-                Text('Start Time: ' + globals.formatTime(widget.ride.data["start_time"])),
-                Text('End Time: ' + globals.formatTime(widget.ride.data["end_time"])),
+                Text('\nDate: '+ globals.formatDate(widget.ride.data["date"]) + '\n', style: TextStyle(fontSize: 20.0)),
+                Text('Driver\'s Name: ' + widget.ride.data["driver_name"], style: TextStyle(fontSize: 20.0)),
+                Text('Rider\'s Name: ' + widget.ride.data["rider_name"], style: TextStyle(fontSize: 20.0)),
+                Text('Ride Amount: \$' + widget.ride.data["bid_amount"], style: TextStyle(fontSize: 20.0)),
+                Text('Start Address: ' + widget.ride.data["start_address"], style: TextStyle(fontSize: 20.0)),
+                Text('End Address: '+ widget.ride.data["end_address"], style: TextStyle(fontSize: 20.0)),
+                Text('Start Time: ' + globals.formatTime(widget.ride.data["start_time"]), style: TextStyle(fontSize: 20.0)),
+                Text('End Time: ' + globals.formatTime(widget.ride.data["end_time"]), style: TextStyle(fontSize: 20.0)),
                 ButtonTheme.bar(
                   child: ButtonBar(
                     children: <Widget>[

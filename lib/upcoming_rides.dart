@@ -128,23 +128,24 @@ class _ListPageState extends State<ListPage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
+
                           Text(
                               '\nDate: ' + globals.formatDate(snapshot.data[index].data["date"]) +
-                                  '\n'),
+                                  '\n', style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('Driver\'s Name: ' +
-                              snapshot.data[index].data["driver_name"]),
+                              snapshot.data[index].data["driver_name"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('Rider\'s Name: ' +
-                              snapshot.data[index].data["rider_name"]),
+                              snapshot.data[index].data["rider_name"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('Ride Amount: \$' +
-                              snapshot.data[index].data["bid_amount"]),
+                              snapshot.data[index].data["bid_amount"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('Start Address: ' +
-                              snapshot.data[index].data["start_address"]),
+                              snapshot.data[index].data["start_address"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('End Address: ' +
-                              snapshot.data[index].data["end_address"]),
+                              snapshot.data[index].data["end_address"], style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('Start Time: ' +
-                              globals.formatTime(snapshot.data[index].data["start_time"])),
+                              globals.formatTime(snapshot.data[index].data["start_time"]), style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           Text('End Time: ' +
-                              globals.formatTime(snapshot.data[index].data["end_time"])),
+                              globals.formatTime(snapshot.data[index].data["end_time"]), style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
                           ButtonTheme
                               .bar( // make buttons use the appropriate styles for cards
                             child: ButtonBar(
