@@ -54,12 +54,19 @@ String formatTime(time)
   String hour = time.substring(10,12);
   if(int.parse(hour) < 12)
     AMorPM = "am";
-  else{
+  else if(int.parse(hour) > 12) {
     AMorPM = "pm";
     int hourNum = int.parse(hour);
     hourNum = hourNum - 12;
     hour = hourNum.toString();
   }
+  else
+    {
+      AMorPM = "pm";
+      int hourNum = int.parse(hour);
+      hour = hourNum.toString();
+
+    }
   return (hour + ":" + minute + AMorPM);
 }
 
